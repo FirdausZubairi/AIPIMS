@@ -41,7 +41,6 @@
             <table class="table table-rounded table-hover">
           <thead>
               <tr>
-                  <th scope="col">ID</th>
                   <th scope="col">Fullname</th>
                   <th scope="col">Username</th>
                   <th scope="col">Password</th>
@@ -53,7 +52,6 @@
           <tbody>
               <!-- Use Thymeleaf loop to iterate over the employees -->
               <tr th:each="users: ${Users}">
-                  <td th:text="${users.sid}"></td> 
                   <td th:text="${users.name}"></td> 
                   <td th:text="${users.uname}"></td>
                   <td th:text="${users.pword}"></td>

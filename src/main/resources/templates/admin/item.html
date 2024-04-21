@@ -41,7 +41,6 @@
               <table class="table align-middle table-rounded">
             <thead>
                 <tr>
-                    <th scope="col">ID</th>
                     <th scope="col">Item Name</th>
                     <th scope="col">Quantity</th>
                     <th scope="col">Category</th>
@@ -52,7 +51,6 @@
             <tbody>
                 <!-- Use Thymeleaf loop to iterate over the employees -->
                 <tr th:each="items: ${Item}">
-                    <td th:text="${items.iId}"></td> 
                     <td th:text="${items.iname}"></td> 
                     <td th:text="${items.iquantity}"></td>
                     <td th:text="${items.icategory}"></td>
