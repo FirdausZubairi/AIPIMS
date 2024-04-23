@@ -37,16 +37,12 @@ public class GettingStartedApplication {
             resultSet.next();
             int count = resultSet.getInt("count");
 
-            model.addAttribute("itemCount", count);
-
             Connection connection2 = dataSource.getConnection();
             final var statement2 = connection2.createStatement();
             final var resultSet2 = statement2.executeQuery(
                     "SELECT COUNT(*) AS count FROM staff;");
             resultSet2.next();
             int count2 = resultSet2.getInt("count");
-
-            model.addAttribute("accountCount", count2);
 
             Connection connection3 = dataSource.getConnection();
             final var statement3 = connection3.createStatement();
@@ -55,6 +51,8 @@ public class GettingStartedApplication {
             resultSet3.next();
             int count3 = resultSet3.getInt("count");
 
+            model.addAttribute("itemCount", count);
+            model.addAttribute("accountCount", count2);
             model.addAttribute("requestCount", count3);
         } catch (SQLException sqe) {
             sqe.printStackTrace();
