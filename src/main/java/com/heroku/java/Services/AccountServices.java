@@ -120,22 +120,6 @@ public class AccountServices {
         }
     }
 
-//Delete Account
-    // public boolean deleteAccount(int staffId) {
-    //     try (Connection connection = dataSource.getConnection()) {
-    //         String sql = "DELETE FROM staff WHERE staffid=?;";
-    //         PreparedStatement statement = connection.prepareStatement(sql);
-    //         statement.setInt(1, staffId);
-
-    //         int rowsAffected = statement.executeUpdate();
-    //         return rowsAffected > 0;
-    //     } catch (SQLException e) {
-    //         // Handle exceptions appropriately
-    //         e.printStackTrace();
-    //         return false;
-    //     }
-    // }
-
     public boolean deleteAccount(int staffId) {
         try (Connection connection = dataSource.getConnection()) {
             String sql = "DELETE FROM staff WHERE staffid=?";

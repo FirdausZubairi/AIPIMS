@@ -20,6 +20,7 @@
         border: solid 2px black;
         text-align: center;
         border-radius: 10px; /* Adjust the radius value as needed */
+        overflow: hidden; 
     }
   </style>
      <!-- content  -->
@@ -38,7 +39,7 @@
                   </div>
                 </div>
               </div><br>
-              <table class="table align-middle table-rounded">
+              <table class="table align-middle table-rounded table-hover">
             <thead>
                 <tr>
                     <th scope="col">Item Name</th>
@@ -55,7 +56,19 @@
                     <td th:text="${items.iquantity}"></td>
                     <td th:text="${items.icategory}"></td>
                     <td>
-                      <div class="dropdown">
+                      <div>
+
+                        <a class="btn-primary btn-sm" th:href="@{/update-item(iId=${items.iId})}">
+                        <button type="button" class="btn btn-primary btn-sm"><span class="material-symbols-outlined">
+                          Edit
+                        </span></button></a>
+                        
+                        <a class="btn-danger btn-sm" th:data-id="${items.iId}" data-toggle="modal" data-target="#deleteModal">
+                        <button type="button" class="btn btn-danger btn-sm"><span class="material-symbols-outlined">
+                          Delete
+                        </span></button></a>
+                        </div>
+                      <!-- <div class="dropdown">
                         <button class="btn btn-submit btn-sm" type="button" id="dropdownMenuButton${i}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                           <span class="material-symbols-outlined">
                               more_vert
@@ -66,7 +79,7 @@
                           <a class="dropdown-item" th:data-id="${items.iId}" data-toggle="modal" data-target="#deleteModal" style="cursor: pointer;">Delete</a>
                         </div>
                       </div>                                                                                                                                     
-                      </div>
+                      </div> -->
                     </td>
                 </tr>
             </tbody>

@@ -30,7 +30,7 @@ public class LoginController {
         }
     }
 
-     @PostMapping("/login")
+    @PostMapping("/login")
     public String dashboard(HttpSession session, @ModelAttribute("Staff") Users users) {
         try {
             Users authenticatedUser = accountServices.authenticateUser(users.getUname(), users.getPword());

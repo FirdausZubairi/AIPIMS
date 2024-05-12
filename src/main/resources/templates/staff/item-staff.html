@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" th:replace="~{fragments/layoutStaff :: layoutStaff (~{::body},'dashboard-staff')}" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" th:replace="~{fragments/layoutStaff :: layoutStaff (~{::body},'item-staff')}" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -14,36 +14,39 @@
 </head>
 
 <body style="background-color: rgb(179, 179, 179);">
+    <style>
+    .table-rounded {
+        border: solid 2px black;
+        text-align: center;
+        border-radius: 10px; /* Adjust the radius value as needed */
+        overflow: hidden; 
+    }
+  </style>
+     <!-- content  -->
+     <div class="dashboard-con d-flex flex-column justify-content-left align-items-center offset-2 col-10">
+      <div style="width: 80%; margin-top: 8%">
+          <h3 style="text-align: left;">Items</h3>
+          <div class="alert alert-info" role="alert" style="font-size: 14px; padding: 5px 10px;">There are all the Item available</div>
+            <br>
+              <table class="table align-middle table-rounded table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">Item Name</th>
+                    <th scope="col">Quantity</th>
+                    <th scope="col">Category</th> 
+                   
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Use Thymeleaf loop to iterate over the employees -->
+                <tr th:each="items: ${Item}">
+                    <td th:text="${items.iname}"></td> 
+                    <td th:text="${items.iquantity}"></td>
+                    <td th:text="${items.icategory}"></td>
+                </tr>
+            </tbody>
+        </table>  
 
-    <div class="dashboard-con d-flex flex-column justify-content-left align-items-center offset-2 col-10">
-        <div style="width: 80%; margin-top: 8%">
-            <div class="card mb-3" style="max-width: 100rem;margin-top: auto;">
-              <div class="row g-0">
-                <div class="col-md-6 offset-md-1">
-                  <img th:src="@{Home.jpg}" class="card-img-top" alt="...">
-                </div>
-                <div class="col-md-4 offset-md-1 d-flex justify-content-center align-items-center">
-                  <div class="card-body">
-                    <div class="justify-content-center">
-                      <div class="row">
-                        <div class="col-md-10">
-                          <a th:href="@{/item-staff}" style="text-decoration: none;">
-                            <div class="card text-center therapist-card" style="background-color: #9CBEEE;">
-                              <div class="card-body">
-                                <h5 class="card-title" style="color: #000000;">Total Items</h5>
-                                <h3 id="totalItem" th:text="${itemCount}" style="color: #FBEAEB;">0</h3>
-                              </div>
-                            </div>
-                          </a>        
-                          
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-          </div>
-        </div> 
         <footer class="d-flex justify-content-center">
           <p>&copy; <span id="currentYear"></span> AI Power Inventory Management System. All rights reserved.</p>
         </footer>

@@ -83,4 +83,16 @@ public class ItemController {
             return "item-not-found";
         }
     }
+
+    @GetMapping("/item-staff")
+    public String ItemStaff(HttpSession session, Model model, Item item) {
+        try {
+            List<Item> itemList = itemServices.getAllItem();
+            model.addAttribute("Item", itemList);
+            return "staff/item-staff";
+        } catch (SQLException e) {
+            System.out.println("message : " + e.getMessage());
+            return "staff/dashboard-staff";
+        }
+    }
 }

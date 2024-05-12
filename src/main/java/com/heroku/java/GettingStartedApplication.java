@@ -5,10 +5,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.ui.Model;
 import javax.sql.DataSource;
 import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -20,61 +18,7 @@ public class GettingStartedApplication {
     @Autowired
     public GettingStartedApplication(DataSource dataSource) {
         this.dataSource = dataSource;
-    }
-
-    // @GetMapping("/")
-    // public String index() {
-    //     return "index";
-    // }
-
-    @GetMapping("/dashboard-admin")
-    public String dashboardAdmin(Model model) {
-        try {
-            Connection connection = dataSource.getConnection();
-            final var statement = connection.createStatement();
-            final var resultSet = statement.executeQuery(
-                    "SELECT COUNT(*) AS count FROM item;");
-            resultSet.next();
-            int count = resultSet.getInt("count");
-
-            Connection connection2 = dataSource.getConnection();
-            final var statement2 = connection2.createStatement();
-            final var resultSet2 = statement2.executeQuery(
-                    "SELECT COUNT(*) AS count FROM staff;");
-            resultSet2.next();
-            int count2 = resultSet2.getInt("count");
-
-            Connection connection3 = dataSource.getConnection();
-            final var statement3 = connection3.createStatement();
-            final var resultSet3 = statement3.executeQuery(
-                    "SELECT COUNT(*) AS count FROM request;");
-            resultSet3.next();
-            int count3 = resultSet3.getInt("count");
-
-            model.addAttribute("itemCount", count);
-            model.addAttribute("accountCount", count2);
-            model.addAttribute("requestCount", count3);
-        } catch (SQLException sqe) {
-            sqe.printStackTrace();
-        }
-
-        return "admin/dashboard-admin";
-    }
-
-    @GetMapping("/dashboard-staff")
-    public String dashboardS() {
-        return "staff/dashboard-staff";
-    }
-
-    @GetMapping("/approve-inventory")
-    public String approveInventory() {
-        return "admin/approve-inventory";
-    }
-
-    @GetMapping("/about")
-    public String about() {
-        return "admin/about";
-    }
+    }  
     
     @GetMapping("/database")
     String database(Map<String, Object> model) {
