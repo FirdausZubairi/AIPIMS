@@ -29,7 +29,9 @@ public class RequestController {
     }
 
     @PostMapping("/request")
-    public String addReq(@ModelAttribute("request") Request request) {
+    public String addReq(HttpSession session, @ModelAttribute("request") Request request) {
+        System.out.println("proid: " + request.getProid());
+        System.out.println("quantity: " + request.getReqQuantity());
         try {
             requestServices.addReq(request);
             return "redirect:/itemrequest";
@@ -68,7 +70,10 @@ public class RequestController {
     @PostMapping("/accept-approve")
     public String approve(HttpSession session, @RequestParam(name = "rid") int requestId, @ModelAttribute("requests") Request request, Model model) {
         try {
-            requestServices.approveInventory(requestId, request.getProtype(), request.getReqQuantity(), request.getRstatus());
+            System.out.println("proid: " + request.getProid());
+            System.out.println("reqQuantity: " + request.getReqQuantity());
+
+            requestServices.approveInventory(requestId, request.getProid(), request.getReqQuantity(), request.getRstatus());
             return "redirect:/approve-inventory";
         } catch (SQLException e) {
             System.out.println("message: " + e.getMessage());
@@ -92,7 +97,7 @@ public class RequestController {
     @PostMapping("/reject-approve")
     public String reject(HttpSession session, @RequestParam(name = "rid") int requestId, @ModelAttribute("requests") Request request, Model model) {
         try {
-            requestServices.rejectInventory(requestId, request.getProtype(), request.getReqQuantity(), request.getRstatus());
+            requestServices.rejectInventory(requestId, request.getProid(), request.getReqQuantity(), request.getRstatus());
             return "redirect:/approve-inventory";
         } catch (SQLException e) {
             System.out.println("message: " + e.getMessage());

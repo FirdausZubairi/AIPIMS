@@ -1,19 +1,19 @@
 package com.heroku.java.Model;
 
 public class Project_Item {
-    private Integer proid;
+    private Integer projid;
     private Integer itid;
     private Integer quantityitemproject;
     
     public Project_Item() {
     }
 
-    public Integer getProid() {
-        return proid;
+    public Integer getProjid() {
+        return projid;
     }
 
-    public void setProid(Integer proid) {
-        this.proid = proid;
+    public void setProid(Integer projid) {
+        this.projid = projid;
     }
 
     public Integer getItid() {

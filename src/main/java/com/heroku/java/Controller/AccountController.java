@@ -27,7 +27,7 @@ public class AccountController {
         return "admin/add-account";
     }
     @PostMapping("/add-account")
-    public String addAcc(@ModelAttribute("user") Users user) {
+    public String addAcc(HttpSession session, @ModelAttribute("user") Users user, Model model) {
         try {
             accountServices.addAccount(user);
             return "redirect:/account";

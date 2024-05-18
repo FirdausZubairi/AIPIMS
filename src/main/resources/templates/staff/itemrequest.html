@@ -33,7 +33,7 @@
                 <table class="table table-rounded table-hover">
               <thead>
                   <tr>
-                      <th scope="col">Project Type</th>
+                      <th scope="col">Project ID</th>
                       <th scope="col">Quantity</th>
                       <th scope="col">Status</th>
                   </tr>
@@ -41,7 +41,7 @@
               <tbody>
                   <!-- Use Thymeleaf loop to iterate over the employees -->
                   <tr th:each="request: ${Request}">
-                      <td th:text="${request.protype}"></td> 
+                      <td th:text="${request.proid}"></td> 
                       <td th:text="${request.reqQuantity}"></td>
                       <td th:text="${request.rstatus}"></td>
                   </tr>
@@ -50,7 +50,7 @@
           </div>
         </div>
 
-        <footer class="d-flex justify-content-center">
+        <footer class="d-flex justify-content-center offset-2">
           <p>&copy; <span id="currentYear"></span> AI Power Inventory Management System. All rights reserved.</p>
         </footer>
 

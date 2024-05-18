@@ -4,25 +4,30 @@ public class Request {
     private Integer rid;
     private Integer sid;
     private Integer iid;
-    private String protype;
+    private String proid;
     private Integer reqQuantity;
     private String rstatus;
 
     public Request() {
     }
 
-    public Request(Integer rid, String protype, Integer reqQuantity, String rstatus) {
+    public Request (String proid, Integer reqQuantity) {
+        this.proid = proid;
+        this.reqQuantity = reqQuantity;
+    }
+
+    public Request(Integer rid, String proid, Integer reqQuantity, String rstatus) {
         this.rid = rid;
-        this.protype = protype;
+        this.proid = proid;
         this.reqQuantity = reqQuantity;
         this.rstatus = rstatus;
     }
 
-    public Request(Integer rid, Integer sid, Integer iid, String protype, Integer reqQuantity, String rstatus) {
+    public Request(Integer rid, Integer sid, Integer iid, String proid, Integer reqQuantity, String rstatus) {
         this.rid = rid;
         this.sid = sid;
         this.iid = iid;
-        this.protype = protype;
+        this.proid = proid;
         this.reqQuantity = reqQuantity;
         this.rstatus = rstatus;
     }
@@ -51,12 +56,12 @@ public class Request {
         this.iid = iid;
     }
 
-    public String getProtype() {
-        return protype;
+    public String getProid() {
+        return proid;
     }
 
-    public void setProtype(String protype) {
-        this.protype = protype;
+    public void setProid(String proid) {
+        this.proid = proid;
     }
 
     public Integer getReqQuantity() {

@@ -33,7 +33,7 @@
                 <table class="table table-rounded table-hover">
               <thead>
                   <tr>
-                      <th scope="col">Project Type</th>
+                      <th scope="col">Project ID</th>
                       <th scope="col">Quantity</th>
                       <th scope="col">Status</th>
                       <th scope="col">Actions</th> 
@@ -43,7 +43,7 @@
               <tbody>
                   <!-- Use Thymeleaf loop to iterate over the employees -->
                   <tr th:each="request: ${Request}">
-                      <td th:text="${request.protype}"></td> 
+                      <td th:text="${request.proid}"></td> 
                       <td th:text="${request.reqQuantity}"></td>
                       <td th:text="${request.rstatus}"></td>
                       <td>

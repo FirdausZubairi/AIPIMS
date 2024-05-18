@@ -45,4 +45,13 @@ public class DashboardServices {
         }
     }
 
+    public int getApproveCount() throws SQLException {
+        try (Connection connection = dataSource.getConnection();
+            Statement statement = connection.createStatement()) {
+            ResultSet resultSet = statement.executeQuery("SELECT COUNT(*) AS count FROM request WHERE status = 'approved';");
+            resultSet.next();
+            return resultSet.getInt("count");
+        }
+    }
+
 }

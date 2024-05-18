@@ -59,12 +59,12 @@
                     </div>
 
                     <div class="col mb-3">
-                        <label for="fname" class="col-sm-2 col-form-label">Project Type</label>
+                        <label for="fname" class="col-sm-2 col-form-label">Project ID</label>
                         <div class="col-sm-10">
-                            <input type="text"
+                            <input type="number"
                              class="form-control"
-                             name="protype"
-                             th:value = "${requests.protype}"
+                             name="proid"
+                             th:value = "${requests.proid}"
                              placeholder="project type"
                              id="iname" readonly>
                         </div>
@@ -91,7 +91,6 @@
                   </div>
                   <br>
                     <button type="submit" class="btn btn-danger">Reject</button>
-                    <button class="btn btn-secondary-emphasis" th:href="@{/approve-inventory}" >Cancel</button>
                 </form>
             </div>
           </div>

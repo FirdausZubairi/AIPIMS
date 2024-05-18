@@ -16,10 +16,12 @@ import jakarta.servlet.http.HttpSession;
 @Service
 public class AccountServices {
   private final DataSource dataSource;
+  private final HttpSession session;
 
   @Autowired
   public AccountServices(DataSource dataSource, HttpSession session) {
     this.dataSource = dataSource;
+    this.session = session;
   }
 
 //Login
@@ -47,14 +49,17 @@ public class AccountServices {
 
 // Add Account
     public void addAccount(Users user) throws SQLException {
+        int userid = (int) session.getAttribute("staffid");
         try (Connection connection = dataSource.getConnection()) {
-            String insertAccountSql = "INSERT INTO staff(fullname, username, password, role) VALUES(?,?,?,?)";
+            String insertAccountSql = "INSERT INTO staff(fullname, username, password, role, managerid) VALUES(?,?,?,?,?)";
             PreparedStatement insertStatement = connection.prepareStatement(insertAccountSql);
+
             insertStatement.setString(1, user.getName());
             insertStatement.setString(2, user.getUname());
             insertStatement.setString(3, user.getPword());
             insertStatement.setString(4, user.getRoles());
-            insertStatement.execute();
+            insertStatement.setInt(5, userid);
+            insertStatement.executeUpdate();
         } catch (SQLException e) {
             throw e;
         }

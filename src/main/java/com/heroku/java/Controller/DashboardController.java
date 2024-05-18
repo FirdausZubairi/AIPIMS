@@ -22,10 +22,12 @@ public class DashboardController {
             int itemCount = dashboardServices.getItemCount();
             int staffCount = dashboardServices.getStaffCount();
             int requestCount = dashboardServices.getRequestCount();
+            int approveCount = dashboardServices.getApproveCount();
 
             model.addAttribute("itemCount", itemCount);
             model.addAttribute("accountCount", staffCount);
             model.addAttribute("requestCount", requestCount);
+            model.addAttribute("approveCount", approveCount);
         } catch (SQLException sqe) {
             sqe.printStackTrace(); // Handle or log the exception
             // You might want to add an error message to the model
