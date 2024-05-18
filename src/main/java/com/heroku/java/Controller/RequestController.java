@@ -41,7 +41,7 @@ public class RequestController {
         }
         return "staff/dashboard-staff";
     }
-
+    
     @GetMapping("/approve-inventory")
     public String approveInventory(HttpSession session, Model model, Request request) {
         try {
