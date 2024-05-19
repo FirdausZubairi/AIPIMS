@@ -8,11 +8,24 @@ public class Request {
     private Integer reqQuantity;
     private String rstatus;
 
+    private String sname;
+    private String proname;
+
     public Request() {
     }
 
-    public Request (String proid, Integer reqQuantity) {
+    public Request(Integer rid, String sname, String proname, Integer reqQuantity, String rstatus) {
+        this.rid = rid;
+        this.sname = sname;
+        this.proname = proname;
+        this.reqQuantity = reqQuantity;
+        this.rstatus = rstatus;
+    }
+
+
+    public Request (String proid, String proname, Integer reqQuantity) {
         this.proid = proid;
+        this.proname = proname;
         this.reqQuantity = reqQuantity;
     }
 
@@ -80,4 +93,19 @@ public class Request {
         this.rstatus = rstatus;
     }
 
+    public String getSname() {
+        return sname;
+    }
+
+    public void setSname(String sname) {
+        this.sname = sname;
+    }
+
+    public String getProname() {
+        return proname;
+    }
+
+    public void setProname(String proname) {
+        this.proname = proname;
+    }
 }
