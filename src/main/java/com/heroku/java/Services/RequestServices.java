@@ -35,6 +35,8 @@ public class RequestServices {
         insertStatement.setString(3, request.getRstatus());
         insertStatement.setInt(4, userid);
         insertStatement.executeUpdate();
+        //amik projectid dri dropdown, then guna project_item table utk amik id item dia.
+
     } catch (SQLException e) {
         throw e;
     }
