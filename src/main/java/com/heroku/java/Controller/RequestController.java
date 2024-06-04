@@ -108,8 +108,10 @@ public class RequestController {
     //staff view status
     @GetMapping("/itemrequest")
     public String itemRequest(HttpSession session, Model model, Request request) {
+        System.out.println("staff id: " + request.getSid());
         try {
             List<Request> requestList = requestServices.getReq();
+            // List<Request> requestList = requestServices.getReq();
             model.addAttribute("Request", requestList);
             return "staff/itemrequest";
         } catch (SQLException e) {

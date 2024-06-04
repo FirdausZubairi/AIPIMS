@@ -45,6 +45,15 @@ public class Request {
         this.rstatus = rstatus;
     }
 
+    public Request(Integer rid, Integer sid, String proid, String proname, Integer reqQuantity, String rstatus) {
+        this.rid = rid;
+        this.sid = sid;
+        this.proid = proid;
+        this.proname = proname;
+        this.reqQuantity = reqQuantity;
+        this.rstatus = rstatus;
+    }
+    
     public Integer getRid() {
         return rid;
     }
