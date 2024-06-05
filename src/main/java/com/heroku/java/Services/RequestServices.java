@@ -135,50 +135,28 @@ public class RequestServices {
   }
 
 //staff view
-public List<Request> getReq() throws SQLException {
-  List<Request> requestList = new ArrayList<>();
-  try (Connection connection = dataSource.getConnection()) {
-      Statement statement = connection.createStatement();
-      int sid = (int) session.getAttribute("staffid");
-      ResultSet resultSet = statement.executeQuery("SELECT r.*, p.projectname FROM request r JOIN project p ON (r.projectid = p.projectid) WHERE r.staffid = ? ORDER BY reqid");
+  public List<Request> getReq(HttpSession session) throws SQLException {
+    List<Request> requestList = new ArrayList<>();
+    try (Connection connection = dataSource.getConnection()) {
+        int sid = (int) session.getAttribute("staffid");
+        PreparedStatement preparedStatement = connection.prepareStatement("SELECT r.*, p.projectname FROM request r JOIN project p ON (r.projectid = p.projectid) WHERE r.staffid = ? ORDER BY reqid");
+        preparedStatement.setInt(1, sid);
+        ResultSet resultSet = preparedStatement.executeQuery();
 
-      while (resultSet.next()) {
-          Integer rid = resultSet.getInt("reqid");
-          Integer proid = resultSet.getInt("projectid");
-          String proname = resultSet.getString("projectname");
-          Integer reqQuantity = resultSet.getInt("reqquantity");
-          String rstatus = resultSet.getString("status");
+        while (resultSet.next()) {
+            Integer rid = resultSet.getInt("reqid");
+            Integer proid = resultSet.getInt("projectid");
+            String proname = resultSet.getString("projectname");
+            Integer reqQuantity = resultSet.getInt("reqquantity");
+            String rstatus = resultSet.getString("status");
 
-          Request request = new Request(rid, sid, proid.toString(), proname, reqQuantity, rstatus);
-          requestList.add(request);
-      }
-  } catch (SQLException e) {
+            Request request = new Request(rid, sid, proid.toString(), proname, reqQuantity, rstatus);
+            requestList.add(request);
+        }
+    }   catch (SQLException e) {
       throw e;
+    }
+    return requestList;
   }
-  return requestList;
-}
-// public List<Request> getReq(Request req) throws SQLException {
-//   List<Request> requestList = new ArrayList<>();
-//   try (Connection connection = dataSource.getConnection()) {
-//       String sql = "SELECT r.*, p.projectname FROM request r JOIN project p ON (r.projectid = p.projectid) WHERE r.staffid = ? ORDER BY reqid";
-//       PreparedStatement statement = connection.prepareStatement(sql);
-//       int sid = (int) session.getAttribute("staffid");
-//       ResultSet resultSet = statement.executeQuery();
-
-//       while (resultSet.next()) {
-//           Integer rid = resultSet.getInt("reqid");
-//           Integer proid = resultSet.getInt("projectid");
-//           String proname = resultSet.getString("projectname");
-//           Integer reqQuantity = resultSet.getInt("reqquantity");
-//           String rstatus = resultSet.getString("status");
-
-//           Request request = new Request(rid, sid, proid.toString(), proname, reqQuantity, rstatus);
-//           requestList.add(request);
-//       }
-//   } catch (SQLException e) {
-//       throw e;
-//   }
-//   return requestList;
-// }
 
 }
