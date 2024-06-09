@@ -7,11 +7,14 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.sql.DataSource;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.heroku.java.Model.Request;
+
 import jakarta.servlet.http.HttpSession;
 
 @Service
@@ -28,12 +31,19 @@ public class RequestServices {
   public void addReq(Request request) throws SQLException {
     int userid = (int) session.getAttribute("staffid");
     try (Connection connection = dataSource.getConnection()) {
-        String insertRequestSql = "INSERT INTO request(projectid, reqquantity, status, staffid) VALUES(?,?,?,?)";
+        String insertRequestSql = "INSERT INTO request(projectid, reqquantity, status, itemid1, itemid2, itemid3, itemid4, itemid5, datereq, datenext, staffid) VALUES(?,?,?,?,?,?,?,?,?,?,?)";
         PreparedStatement insertStatement = connection.prepareStatement(insertRequestSql);
         insertStatement.setInt(1, Integer.parseInt(request.getProid()));
         insertStatement.setInt(2, request.getReqQuantity());
         insertStatement.setString(3, request.getRstatus());
-        insertStatement.setInt(4, userid);
+        insertStatement.setInt(4, request.getItem1());
+        insertStatement.setInt(5, request.getItem2());
+        insertStatement.setInt(6, request.getItem3());
+        insertStatement.setInt(7, request.getItem4());
+        insertStatement.setInt(8, request.getItem5());
+        insertStatement.setDate(9, request.getDateReq());
+        insertStatement.setString(10, request.getDateNext());
+        insertStatement.setInt(11, userid);
         insertStatement.executeUpdate();
         //amik projectid dri dropdown, then guna project_item table utk amik id item dia.
 

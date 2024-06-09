@@ -123,68 +123,151 @@
                   </div>
                 </div>
 
+                <div class="col-8 mb-3">
+                  <label
+                    for="inputProject"
+                    name="dateReq"
+                    class="form-label"
+                    >Date Request</label
+                  >
+                  <div class="col">
+                    <input
+                      type="date"
+                      min="1"
+                      class="form-control"
+                      name="dateReq"
+                      id="dateReq"
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div class="col-8 mb-3">
+                  <label
+                    hidden
+                    for="inputProject"
+                    name="dateNext"
+                    class="form-label"
+                    >Status</label
+                  >
+                  <select
+                    hidden
+                    id="dateNext"
+                    name="dateNext"
+                    type="hidden"
+                    class="form-select"
+                    required
+                  >
+                    <option type="hidden" value="December 2024">December 2024</option>
+                  </select>
+                </div>
+                
                 <!-- item -->
-                <span>Item Include:</span>
-                      <div class="form-check">
-                        <input
-                          name="itemCheckbox"
-                          value="1"
-                          class="form-check-input"
-                          type="checkbox"
-                          id="gridCheck1"
-                        />
-                        <label class="form-check-label" for="gridCheck1">
-                          Wire 1.5mm
-                        </label>
-                      </div>
-                      <div class="form-check">
-                        <input
-                          name="itemCheckbox"
-                          value="2"
-                          class="form-check-input"
-                          type="checkbox"
-                          id="gridCheck1"
-                        />
-                        <label class="form-check-label" for="gridCheck1">
-                          Lamp
-                        </label>
-                      </div>
-                      <div class="form-check">
-                        <input
-                          name="itemCheckbox"
-                          value="3"
-                          class="form-check-input"
-                          type="checkbox"
-                          id="gridCheck1"
-                        />
-                        <label class="form-check-label" for="gridCheck1">
-                          Switch
-                        </label>
-                      </div>
-                      <div class="form-check">
-                        <input
-                          name="itemCheckbox"
-                          value="4"
-                          class="form-check-input"
-                          type="checkbox"
-                          id="gridCheck1"
-                        />
-                        <label class="form-check-label" for="gridCheck1">
-                          Socket Outlet
-                        </label>
-                      </div>
-                      <div class="form-check">
-                        <input
-                          name="itemCheckbox"
-                          value="5"
-                          class="form-check-input"
-                          type="checkbox"
-                          id="gridCheck1"
-                        />
-                        <label class="form-check-label" for="gridCheck1">
-                          Distribution Board (DB)
-                        </label>
-                      </div> 
+
+                <!-- Item 1 -->
+                <div class="col-8 mb-3">
+                  <label
+                    hidden
+                    for="inputProject"
+                    name="item1"
+                    class="form-label"
+                    >item 1</label
+                  >
+                  <select
+                    hidden
+                    id="item1"
+                    name="item1"
+                    type="hidden"
+                    class="form-select"
+                    required
+                  >
+                    <option type="hidden" value="1">Wire 1.5mm</option>
+                  </select>
+                </div>
+
+                <!-- Item 2 -->
+                <div class="col-8 mb-3">
+                  <label
+                    hidden
+                    for="inputProject"
+                    name="item2"
+                    class="form-label"
+                    >item 2</label
+                  >
+                  <select
+                    hidden
+                    id="item2"
+                    name="item2"
+                    type="hidden"
+                    class="form-select"
+                    required
+                  >
+                    <option type="hidden" value="2">Lamp</option>
+                  </select>
+                </div>
+
+                <!-- Item 3 -->
+                <div class="col-8 mb-3">
+                  <label
+                    hidden
+                    for="inputProject"
+                    name="item3"
+                    class="form-label"
+                    >item 3</label
+                  >
+                  <select
+                    hidden
+                    id="item3"
+                    name="item3"
+                    type="hidden"
+                    class="form-select"
+                    required
+                  >
+                    <option type="hidden" value="3">Switch</option>
+                  </select>
+                </div>
+
+                <!-- Item 4 -->
+                <div class="col-8 mb-3">
+                  <label
+                    hidden
+                    for="inputProject"
+                    name="item4"
+                    class="form-label"
+                    >item 4</label
+                  >
+                  <select
+                    hidden
+                    id="item4"
+                    name="item4"
+                    type="hidden"
+                    class="form-select"
+                    required
+                  >
+                    <option type="hidden" value="4">Socket Outlet</option>
+                  </select>
+                </div>
+
+                <!-- Item 5 -->
+                <div class="col-8 mb-3">
+                  <label
+                    hidden
+                    for="inputProject"
+                    name="item5"
+                    class="form-label"
+                    >item 5</label
+                  >
+                  <select
+                    hidden
+                    id="item5"
+                    name="item5"
+                    type="hidden"
+                    class="form-select"
+                    required
+                  >
+                    <option type="hidden" value="5">DB</option>
+                  </select>
+                </div>
                 <!-- end item -->
 
                 <div class="col-8 mb-3">
@@ -206,6 +289,7 @@
                     <option type="hidden" value="pending">pending</option>
                   </select>
                 </div>
+
                 <div class="row mb-3">
                   <div class="col-sm-10">
                     <div class="form-check">
