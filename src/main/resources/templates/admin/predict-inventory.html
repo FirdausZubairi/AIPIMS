@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" th:replace="~{fragments/layoutAdmin :: layoutAdmin (~{::body},'dashboard-admin')}" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" th:replace="~{fragments/layoutAdmin :: layoutAdmin (~{::body},'predict-inventory')}" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -30,10 +30,10 @@
                   update and delete the items details</div>
                   <div class="d-flex justify-content-end align-items-center">
                     <div class="d-flex justify-content-end">
-                      <!-- Add New Item Button -->
+                      <!-- Add New Prediction Button -->
                       <div class="text-end">
-                          <a th:href="@{/create-item}">
-                              <button class="btn btn-primary btn-sm" type="button">Predict New Inventory</button>
+                      <a th:href="@{/new-predict}">
+                        <button class="btn btn-primary btn-sm" type="button">Predict New Inventory</button>
                       </a>
                       </div>
                     </div>

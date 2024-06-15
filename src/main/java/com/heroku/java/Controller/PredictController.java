@@ -19,4 +19,9 @@ public class PredictController {
     public String predict() {
         return "admin/predict-inventory";
     }
+
+    @GetMapping("/new-predict")
+    public String npredict() {
+        return "admin/new-predict";
+    }
 }
