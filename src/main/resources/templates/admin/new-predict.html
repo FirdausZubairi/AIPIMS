@@ -53,7 +53,7 @@
                       >
                       <select
                         id="project"
-                        name="proid"
+                        name="proID"
                         class="form-select"
                         required
                       >
@@ -66,46 +66,72 @@
                         <option value="6">Banglo House 5 Room</option>
                       </select>
                     </div>
+
+                    <div class="col-8 mb-3 col-sm-8">
+                      <label for="inputProject" name="iname" class="form-label"
+                        >Item Name</label
+                      >
+                      <select
+                        id="project"
+                        name="itemID"
+                        class="form-select"
+                        required
+                      >
+                        <option value="" disabled selected>Select Option</option>
+                        <option value="1">Wire 1.5mm</option>
+                        <option value="2">Lamp</option>
+                        <option value="3">Switch</option>
+                        <option value="4">Socket Outlet</option>
+                        <option value="5">Distribution Board (DB)</option>
+                      </select>
+                    </div>
+            
                     <div class="col mb-3">
-                    <label for="name" class="col-sm-2 col-form-label">Item Name</label>
-                    <div class="col-sm-8">
-                        <input type="text"
-                         class="form-control"
-                         name="iname"
-                         placeholder="item name"
-                         id="name" required>
-                    </div>
-                    </div>
+                      <label for="name" class="col col-form-label">Request Quantity</label>
+                      <div class="col-sm-8">
+                          <input type="text"
+                           id="requestQuantity" onkeyup="calculatePrediction()"
+                           class="form-control"
+                           name="reqQuan"
+                           placeholder="Request quantity"
+                            required>
+                      </div>
+                      </div> 
+
                     <div class="col mb-3">
-                    <label for="inputPassword3" class="col col-form-label">Predicted Quantity</label>
-                    <div class="col-sm-8">
-                        <input type="number" 
-                        class="form-control" 
-                        name="predicted"
-                        placeholder="predict" 
-                        id="inputPassword3" required>
-                    </div>
-                    </div>
-                    <!-- <div class="col-4 mb-3">
-                        <label for="inputRole" name="roles" class="form-label">Request ID</label>
-                        <select id="role" name="roles" class="form-select" required>
-                        <option value="" disabled selected>
-                                Select Option
-                        </option>
-                        <option value="staff">Staff</option>
-                        </select>
-                    </div> -->
-                    <div class="row mb-3">
-                    <div class="col-sm-8">
-                        <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="gridCheck1" required>
-                        <label class="form-check-label" for="gridCheck1">
-                            are the details above correct?
-                        </label>
+                      <label for="name" class="col col-form-label">Item Quantity</label>
+                      <div class="col-sm-8">
+                          <input type="text"
+                           id="itemQuantity" onkeyup="calculatePrediction()"
+                           class="form-control"
+                           name="itemQuan"
+                           placeholder="Item quantity"
+                           required>
+                      </div>
+                      </div> 
+
+                      <div class="col mb-3">
+                        <label for="name" class="col col-form-label">Predicted Item</label>
+                        <div class="col-sm-8">
+                          <p id="predictedQuantity" class="prediction">0</p>
+                            <!-- <input type="text"
+                             id="predictedQuantity" 
+                             class="prediction form-control"
+                             name="aa"
+                             placeholder="0"
+                             required> -->
                         </div>
-                    </div>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Save</button>
+                        </div>
+
+                    <!-- <label for="inputPassword3" class="col col-form-label">Predicted Quantity</label>
+                    <div class="col-sm-8">
+                      <input type="number" name="predictQuan" id="teamstats"
+                          class="netPredict form-control form-control-lg bg-light fs-6 text-uppercase"
+                          placeholder="Predicted Quantity" disabled>
+                      <label for="floatingInputGrid">Item Predicted: </label>
+                    </div> -->
+
+                    <button type="submit" class="btn btn-primary">Submit</button>
                 </form>
             </div>
           </div>
@@ -115,7 +141,39 @@
         <footer class="d-flex justify-content-center col-8 offset-3">
           <p>&copy; <span id="currentYear"></span> AI Power Inventory Management System. All rights reserved.</p>
         </footer>
+          <script>
 
+            function calculatePrediction() {
+                var requestQuantity = document.getElementById("requestQuantity").value;
+                var itemQuantity = document.getElementById("itemQuantity").value;
+                var predictedQuantity = document.getElementById("predictedQuantity");
+
+              if (requestQuantity && itemQuantity) {
+                    predictedQuantity.innerText = requestQuantity * itemQuantity * 2;
+              } else {
+                    predictedQuantity.innerText = 0;
+              }
+            }
+
+        //     function updateTeamStats() {
+        //     let totalStats = 0;
+        //     const totalPlayer = addedPlayers.length;
+
+        //     // Calculate total stats
+        //     addedPlayers.forEach(player => {
+        //         totalStats += player.stats;
+        //     });
+
+        //     // Calculate team stats
+        //     const teamStats = totalPlayer === 0 ? 0 : totalStats / totalPlayer;
+
+        //     // Enable the teamstats input field
+        //     document.getElementById('teamstats').removeAttribute('disabled');
+
+        //     // Update the team stats input field
+        //     document.getElementById('teamstats').value = Math.round(teamStats);
+        // }
+          </script>
 
             <script
                 src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
