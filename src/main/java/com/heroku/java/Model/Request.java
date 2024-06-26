@@ -19,6 +19,7 @@ public class Request {
 
     private String sname;
     private String proname;
+    private String iname;
 
     public Request() {
     }
@@ -39,7 +40,19 @@ public class Request {
         this.rstatus = rstatus;
     }
 
-
+    public Request(Integer rid, Integer iid, Integer item1, Integer item2, Integer item3, Integer item4, Integer item5,
+            String proid, String proname, String iname) {
+        this.rid = rid;
+        this.iid = iid;
+        this.item1 = item1;
+        this.item2 = item2;
+        this.item3 = item3;
+        this.item4 = item4;
+        this.item5 = item5;
+        this.proid = proid;
+        this.proname = proname;
+        this.iname = iname;
+    }
 
     public Request(Integer rid, String sname, String proname, Integer reqQuantity, String rstatus) {
         this.rid = rid;
@@ -199,5 +212,13 @@ public class Request {
 
     public void setProname(String proname) {
         this.proname = proname;
+    }
+
+    public String getIname() {
+        return iname;
+    }
+
+    public void setIname(String iname) {
+        this.iname = iname;
     }
 }

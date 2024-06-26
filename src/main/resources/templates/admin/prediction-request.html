@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en" th:replace="~{fragments/layoutAdmin :: layoutAdmin (~{::body},'prediction-request')}" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <link rel="stylesheet" type="text/css" th:href="@{/css/main.css}"> -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
+    <link rel="icon" th:href="@{/AI_Power.png} ">
+    <title>AI Power Inventory Management System</title>
+</head>
+
+<body style="background-color: rgb(179, 179, 179);">
+    <style>
+    .table-rounded {
+        border: solid 2px black;
+        text-align: center;
+        border-radius: 10px; /* Adjust the radius value as needed */
+        overflow: hidden; 
+    }
+  </style>
+     <!-- content  -->
+     <div class="dashboard-con d-flex flex-column justify-content-left align-items-center offset-2 col-10">
+        <div style="width: 80%; margin-top: 8%">
+            <h3 style="text-align: left;">Predict Request</h3>
+            <div class="alert alert-info" role="alert" style="font-size: 14px; padding: 5px 10px;">You can click Action button to predict the item.</div>
+                <div class="d-flex justify-content-end align-items-center">
+                </div><br>
+                <table class="table table-rounded table-hover">
+              <thead>
+                  <tr>
+                      <th scope="col">Project Name</th>
+                      <th scope="col">Quantity</th>
+                      <th scope="col">Action</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  <!-- Use Thymeleaf loop to iterate over the employees -->
+                  <tr th:each="request: ${Request}">
+                      <td th:text="${request.proname}"></td>
+                      <td th:text="${request.reqQuantity}"></td>
+                      <td>
+                        <!-- <a class="btn-primary btn-sm" th:href="@{/new-predict(rid=${request.rid})}"> -->
+                        <a class="btn-primary btn-sm">
+                            <button type="button" class="btn btn-primary btn-sm">predict</button></a>
+                      </td>
+                  </tr>
+              </tbody>
+          </table>  
+          </div>
+        </div>
+
+        <footer class="d-flex justify-content-center offset-2">
+          <p>&copy; <span id="currentYear"></span> AI Power Inventory Management System. All rights reserved.</p>
+        </footer>
+
+            <script
+                src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+                integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+                crossorigin="anonymous"></script>
+            <script
+                src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+                integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+                crossorigin="anonymous"></script>
+            <script
+                src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"
+                integrity="sha384-fbbOQedDUMZZ5KreZpsbe1LCZPVmfTnH7ois6mU1QK+m14rQ1l2bGBq41eYeM/fS"
+                crossorigin="anonymous"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

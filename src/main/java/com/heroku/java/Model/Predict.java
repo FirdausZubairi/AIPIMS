@@ -3,18 +3,42 @@ package com.heroku.java.Model;
 public class Predict {
     private Integer predictID;
     private Integer predictquan;
-    private Integer proID;
-    private Integer itemID;
+    private String proID;
+    private String itemID;
     private Integer reqID;
-    
+    private String year;
+
     private String itemName;
+    private String proName;
     private Integer reqQuan;
     private Integer quanItem;
     
     public Predict() {
     }
+    
+    public Predict(Integer predictquan, String itemID, Integer reqID, String year, String itemName, String proName) {
+        this.predictquan = predictquan;
+        this.itemID = itemID;
+        this.reqID = reqID;
+        this.year = year;
+        this.itemName = itemName;
+        this.proName = proName;
+    }
 
-    public Predict(Integer predictID, Integer predictquan, Integer proID, Integer itemID, Integer reqID,
+
+
+    public Predict(Integer predictquan, String proName, String itemID, Integer reqID,
+            String itemName) {
+        this.predictquan = predictquan;
+        this.proName = proName;
+        this.itemID = itemID;
+        this.reqID = reqID;
+        this.itemName = itemName;
+    }
+
+
+
+    public Predict(Integer predictID, Integer predictquan, String proID, String itemID, Integer reqID,
             Integer reqQuan, Integer quanItem) {
         this.predictID = predictID;
         this.predictquan = predictquan;
@@ -25,26 +49,9 @@ public class Predict {
         this.quanItem = quanItem;
     }
 
-    public Predict(Integer predictquan, Integer proID, Integer itemID, Integer reqID, Integer reqQuan,
-            Integer quanItem) {
-        this.predictquan = predictquan;
-        this.proID = proID;
-        this.itemID = itemID;
-        this.reqID = reqID;
-        this.reqQuan = reqQuan;
-        this.quanItem = quanItem;
-    }
+    
 
-    public Predict(Integer predictquan, Integer proID, Integer itemID, Integer reqID, String itemName, Integer reqQuan,
-            Integer quanItem) {
-        this.predictquan = predictquan;
-        this.proID = proID;
-        this.itemID = itemID;
-        this.reqID = reqID;
-        this.itemName = itemName;
-        this.reqQuan = reqQuan;
-        this.quanItem = quanItem;
-    }
+
 
     public Integer getPredictID() {
         return predictID;
@@ -62,19 +69,19 @@ public class Predict {
         this.predictquan = predictquan;
     }
 
-    public Integer getProID() {
+    public String getProID() {
         return proID;
     }
 
-    public void setProID(Integer proID) {
+    public void setProID(String proID) {
         this.proID = proID;
     }
 
-    public Integer getItemID() {
+    public String getItemID() {
         return itemID;
     }
 
-    public void setItemID(Integer itemID) {
+    public void setItemID(String itemID) {
         this.itemID = itemID;
     }
 
@@ -108,5 +115,21 @@ public class Predict {
 
     public void setItemName(String itemName) {
         this.itemName = itemName;
+    }
+
+    public String getProName() {
+        return proName;
+    }
+
+    public void setProName(String proName) {
+        this.proName = proName;
+    }
+
+    public String getYear() {
+        return year;
+    }
+
+    public void setYear(String year) {
+        this.year = year;
     }
 }
