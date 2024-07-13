@@ -16,36 +16,47 @@ import jakarta.servlet.http.HttpSession;
 @Service
 public class RequestServices {
   private final DataSource dataSource;
-  private final HttpSession session;
 
   @Autowired
-  public RequestServices(DataSource dataSource, HttpSession session) {
+  public RequestServices(DataSource dataSource) {
     this.dataSource = dataSource;
-    this.session = session;
   }
-  
-  public void addReq(Request request) throws SQLException {
+
+  public String addReq(Request request, List<String> checkboxValues, HttpSession session) throws SQLException {
     int userid = (int) session.getAttribute("staffid");
     try (Connection connection = dataSource.getConnection()) {
-        String insertRequestSql = "INSERT INTO request(projectid, reqquantity, status, itemid1, itemid2, itemid3, itemid4, itemid5, datereq, datenext, staffid) VALUES(?,?,?,?,?,?,?,?,?,?,?)";
+        String insertRequestSql = "INSERT INTO request(projectid, reqquantity, status, datereq, datenext, staffid) VALUES(?,?,?,?,?,?) RETURNING reqid";
         PreparedStatement insertStatement = connection.prepareStatement(insertRequestSql);
         insertStatement.setInt(1, Integer.parseInt(request.getProid()));
         insertStatement.setInt(2, request.getReqQuantity());
         insertStatement.setString(3, request.getRstatus());
-        insertStatement.setInt(4, request.getItem1());
-        insertStatement.setInt(5, request.getItem2());
-        insertStatement.setInt(6, request.getItem3());
-        insertStatement.setInt(7, request.getItem4());
-        insertStatement.setInt(8, request.getItem5());
-        insertStatement.setDate(9, request.getDateReq());
-        insertStatement.setString(10, request.getDateNext());
-        insertStatement.setInt(11, userid);
-        insertStatement.executeUpdate();
-        //amik projectid dri dropdown, then guna project_item table utk amik id item dia.
+        insertStatement.setDate(4, request.getDateReq());
+        insertStatement.setString(5, request.getDateNext());
+        insertStatement.setInt(6, userid);
+
+        ResultSet resultSet = insertStatement.executeQuery();
+        
+        // Retrieve the request ID based on database logic
+        int reqid = 0;
+        if (resultSet.next()) {
+            reqid = resultSet.getInt("reqid");
+        }
+
+        // Insert request details for each checkbox value
+        String insertRequestDetailSql = "INSERT INTO reqdetail(reqid, itemid) VALUES(?,?)";
+        PreparedStatement insertStatement2 = connection.prepareStatement(insertRequestDetailSql);
+
+        for (String value : checkboxValues) {
+            insertStatement2.setInt(1, reqid);
+            insertStatement2.setInt(2, Integer.parseInt(value));
+            insertStatement2.addBatch();
+        }
+        insertStatement2.executeBatch();
 
     } catch (SQLException e) {
         throw e;
     }
+    return null;
   }
 
   public List<Request> getAllReq() throws SQLException {

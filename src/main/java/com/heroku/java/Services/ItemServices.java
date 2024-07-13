@@ -24,18 +24,18 @@ public class ItemServices {
   }
 
 // Add Item
-public void addItem(Item item) throws SQLException {
-    try (Connection connection = dataSource.getConnection()) {
-        String insertItemSql = "INSERT INTO item(itemname, itemquantity, category) VALUES(?,?,?)";
-        PreparedStatement insertStatement = connection.prepareStatement(insertItemSql);
-        insertStatement.setString(1, item.getIname());
-        insertStatement.setInt(2, item.getIquantity());
-        insertStatement.setString(3, item.getIcategory());
-        insertStatement.execute();
-    } catch (SQLException e) {
-        throw e;
+    public void addItem(Item item) throws SQLException {
+        try (Connection connection = dataSource.getConnection()) {
+            String insertItemSql = "INSERT INTO item(itemname, itemquantity, category) VALUES(?,?,?)";
+            PreparedStatement insertStatement = connection.prepareStatement(insertItemSql);
+            insertStatement.setString(1, item.getIname());
+            insertStatement.setInt(2, item.getIquantity());
+            insertStatement.setString(3, item.getIcategory());
+            insertStatement.execute();
+        } catch (SQLException e) {
+            throw e;
+        }
     }
-}
 // Display Item
     public List<Item> getAllItem() throws SQLException {
         List<Item> itemList = new ArrayList<>();
@@ -94,20 +94,20 @@ public void addItem(Item item) throws SQLException {
     }
 
 //Delete Item
-public boolean deleteItem(int itemId) {
-    try (Connection connection = dataSource.getConnection()) {
-        String sql = "DELETE FROM item WHERE itemid=?;";
-        PreparedStatement statement = connection.prepareStatement(sql);
-        statement.setInt(1, itemId);
+    public boolean deleteItem(int itemId) {
+        try (Connection connection = dataSource.getConnection()) {
+            String sql = "DELETE FROM item WHERE itemid=?;";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setInt(1, itemId);
 
-        System.out.println("hehe");
+            System.out.println("hehe");
 
-        int rowsAffected = statement.executeUpdate();
-        return rowsAffected > 0;
-    } catch (SQLException e) {
-        // Handle exceptions appropriately
-        e.printStackTrace();
-        return false;
+            int rowsAffected = statement.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            // Handle exceptions appropriately
+            e.printStackTrace();
+            return false;
+        }
     }
-}
 }

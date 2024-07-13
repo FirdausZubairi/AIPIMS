@@ -23,22 +23,20 @@ public class RequestController {
     }
 
     @GetMapping("/request")
-    public String addRequest() {
+    public String addRequest(Model model) {
+        model.addAttribute("request", new Request());
         return "staff/request";
     }
 
     @PostMapping("/request")
-    public String addReq(HttpSession session, @ModelAttribute("request") Request request) {
+    public String addReq(HttpSession session, @ModelAttribute("request") Request request, @RequestParam("itemCheckbox") List<String> checkboxValues) throws SQLException {
         System.out.println("proid: " + request.getProid());
         System.out.println("quantity: " + request.getReqQuantity());
-        try {
-            requestServices.addReq(request);
-            return "redirect:/itemrequest";
-        } catch (SQLException e) {
-            System.out.println("message : " + e.getMessage());
-            System.out.println("error");
-        }
-        return "staff/dashboard-staff";
+        System.out.println("value = " + checkboxValues);
+
+        requestServices.addReq(request, checkboxValues, session);
+
+        return "redirect:/itemrequest";
     }
     
     @GetMapping("/approve-inventory")
