@@ -44,8 +44,8 @@
           <div class="col-md-6">
             <div class="card-body">
               <!-- th:action="@{/new-predict?rid=} + ${request.rid}" -->
-                <form class="row g-3" method="post" th:action="@{/new-predict}" modelAttribute="predicts">
-                    <h3>Predict</h3><br>
+                <form method="post" th:action="@{/new-predict}" modelAttribute="predicts">
+                    <h3>Retrieve</h3>
 
                     <div class="col mb-3">
                       <div class="col-8">
@@ -59,10 +59,10 @@
                       </div> 
                       <br>
 
-                      <div class="row g-3">
-                        <div class="col-md-6">
+                      
+                      <div class="col-8 mb-3 col-sm-8">
                           <label for="inputProject" name="proID" class="form-label"
-                          >Project Type</label>
+                          >Project Name</label>
                           <select
                           id="project"
                           name="proID"
@@ -79,7 +79,7 @@
                         </select>
                         </div>
     
-                        <div class="col-md-5">
+                        <div class="col-8 mb-3 col-sm-8">
                           <label for="name" class="form-label">Request Quantity</label>
                           <div class="form-label">
                             <input type="text"
@@ -91,13 +91,13 @@
                         </div>
                         </div>                   
           
-                  </div>
+                  
                                 
                     <!-- testt -->
-                    <div class="row g-3">
-                    <div class="col-md-5">
+                  
+                    <div class="col-8 mb-3 col-sm-8">
                       <label for="inputProject" name="itemID" class="form-label"
-                          >Item 1</label
+                          >Item </label
                         >
                         <select
                           id="project"
@@ -114,7 +114,7 @@
                         </select>
                     </div>
 
-                    <div class="col-md-3">
+                    <div class="col-8 mb-3 col-sm-8">
                       <label for="name" class="form-label">Item Quantity</label>
                       <input type="text"
                            id="itemQuantity" onkeyup="calculatePrediction()"
@@ -124,7 +124,7 @@
                            required>
                     </div>
                     
-                    <div class="col-md-3">
+                    <div class="col-8 mb-3 col-sm-8">
                       <label for="inputZip" class="form-label">Predicted Item</label>
                       <input type="text"
                              id="predictedQuantity" 
@@ -133,172 +133,8 @@
                              placeholder="0"
                              required readonly>                    
                     </div>
-                    </div>
-
-                    <div class="row g-3">
-                      <div class="col-md-5">
-                        <label for="inputProject" name="itemID" class="form-label"
-                            >Item 2</label
-                          >
-                          <select
-                            id="project"
-                            name="item1"
-                            class="form-select"
-                            required
-                          >
-                            <option value="" disabled selected>Select Option</option>
-                            <option value="1" >Wire 1.5mm</option>
-                            <option value="2" >Lamp</option>
-                            <option value="3" >Switch</option>
-                            <option value="4" >Socket Outlet</option>
-                            <option value="5" >Distribution Board (DB)</option>
-                          </select>
-                      </div>
-  
-                      <div class="col-md-3">
-                        <label for="name" class="form-label">Item Quantity</label>
-                        <input type="text"
-                             id="itemQuantity" onkeyup="calculatePrediction()"
-                             class="form-control"
-                             name="itemQuan"
-                             placeholder="Item quantity"
-                             required>
-                      </div>
-                      
-                      <div class="col-md-3">
-                        <label for="inputZip" class="form-label">Predicted Item</label>
-                        <input type="text"
-                               id="predictedQuantity" 
-                               class="prediction form-control"
-                               name="predictQuan"
-                               placeholder="0"
-                               required readonly>                    
-                      </div>
-                      </div>
-
-                      <div class="row g-3">
-                        <div class="col-md-5">
-                          <label for="inputProject" name="itemID" class="form-label"
-                              >Item 3</label
-                            >
-                            <select
-                              id="project"
-                              name="item1"
-                              class="form-select"
-                              required
-                            >
-                              <option value="" disabled selected>Select Option</option>
-                              <option value="1" >Wire 1.5mm</option>
-                              <option value="2" >Lamp</option>
-                              <option value="3" >Switch</option>
-                              <option value="4" >Socket Outlet</option>
-                              <option value="5" >Distribution Board (DB)</option>
-                            </select>
-                        </div>
-    
-                        <div class="col-md-3">
-                          <label for="name" class="form-label">Item Quantity</label>
-                          <input type="text"
-                               id="itemQuantity" onkeyup="calculatePrediction()"
-                               class="form-control"
-                               name="itemQuan"
-                               placeholder="Item quantity"
-                               required>
-                        </div>
-                        
-                        <div class="col-md-3">
-                          <label for="inputZip" class="form-label">Predicted Item</label>
-                          <input type="text"
-                                 id="predictedQuantity" 
-                                 class="prediction form-control"
-                                 name="predictQuan"
-                                 placeholder="0"
-                                 required readonly>                    
-                        </div>
-                        </div>
-
-                        <div class="row g-3">
-                          <div class="col-md-5">
-                            <label for="inputProject" name="itemID" class="form-label"
-                                >Item 4</label
-                              >
-                              <select
-                                id="project"
-                                name="item1"
-                                class="form-select"
-                                required
-                              >
-                                <option value="" disabled selected>Select Option</option>
-                                <option value="1" >Wire 1.5mm</option>
-                                <option value="2" >Lamp</option>
-                                <option value="3" >Switch</option>
-                                <option value="4" >Socket Outlet</option>
-                                <option value="5" >Distribution Board (DB)</option>
-                              </select>
-                          </div>
-      
-                          <div class="col-md-3">
-                            <label for="name" class="form-label">Item Quantity</label>
-                            <input type="text"
-                                 id="itemQuantity" onkeyup="calculatePrediction()"
-                                 class="form-control"
-                                 name="itemQuan"
-                                 placeholder="Item quantity"
-                                 required>
-                          </div>
-                          
-                          <div class="col-md-3">
-                            <label for="inputZip" class="form-label">Predicted Item</label>
-                            <input type="text"
-                                   id="predictedQuantity" 
-                                   class="prediction form-control"
-                                   name="predictQuan"
-                                   placeholder="0"
-                                   required readonly>                    
-                          </div>
-                          </div>
-
-                          <div class="row g-3">
-                            <div class="col-md-5">
-                              <label for="inputProject" name="itemID" class="form-label"
-                                  >Item 5</label
-                                >
-                                <select
-                                  id="project"
-                                  name="item1"
-                                  class="form-select"
-                                  required
-                                >
-                                  <option value="" disabled selected>Select Option</option>
-                                  <option value="1" >Wire 1.5mm</option>
-                                  <option value="2" >Lamp</option>
-                                  <option value="3" >Switch</option>
-                                  <option value="4" >Socket Outlet</option>
-                                  <option value="5" >Distribution Board (DB)</option>
-                                </select>
-                            </div>
-        
-                            <div class="col-md-3">
-                              <label for="name" class="form-label">Item Quantity</label>
-                              <input type="text"
-                                   id="itemQuantity" onkeyup="calculatePrediction()"
-                                   class="form-control"
-                                   name="itemQuan"
-                                   placeholder="Item quantity"
-                                   required>
-                            </div>
-                            
-                            <div class="col-md-3">
-                              <label for="inputZip" class="form-label">Predicted Item</label>
-                              <input type="text"
-                                     id="predictedQuantity" 
-                                     class="prediction form-control"
-                                     name="predictQuan"
-                                     placeholder="0"
-                                     required readonly>                    
-                            </div>
-                            </div>
-                                    
+                  
+                                  
                     <!-- test end -->
                     <div class="col-12">
                       <button type="submit" class="btn btn-primary">Submit</button>

@@ -11,6 +11,8 @@ import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.heroku.java.Model.Predict;
+import com.heroku.java.Model.CaseBased;
+import com.heroku.java.Model.Item;
 // import jakarta.servlet.http.HttpSession;
 import com.heroku.java.Model.Request;
 
@@ -24,36 +26,41 @@ public class PredictServices {
     this.dataSource = dataSource;
   }
 
-  public List<Predict> getPredict() throws SQLException {
-    List<Predict> predictList = new ArrayList<>();
+  public List<CaseBased> getPredict() throws SQLException {
+    List<CaseBased> predictList = new ArrayList<>();
     try (Connection connection = dataSource.getConnection()) {
-        PreparedStatement preparedStatement = connection.prepareStatement("SELECT v.*, i.itemname, p.projectname FROM predicted_inventory v JOIN item i ON (v.itemid = i.itemid) JOIN project p ON (v.projectid = p.projectid);");
+        PreparedStatement preparedStatement = connection.prepareStatement(
+            "SELECT v.*, i.itemname, p.projectname FROM cbr v " +
+            "JOIN project_item pt ON (v.piid = pt.piid) " +
+            "JOIN item i ON (pt.itemid = i.itemid) " + 
+            "JOIN project p ON (pt.projectid = p.projectid)"
+        );
         ResultSet resultSet = preparedStatement.executeQuery();
 
         while (resultSet.next()) {
-            Integer reqID = resultSet.getInt("reqid");
-            String proName = resultSet.getString("projectname");
+            Integer cbrID = resultSet.getInt("cbrid");
+            String projectName = resultSet.getString("projectname");
             String itemName = resultSet.getString("itemname");
-            Integer itemID = resultSet.getInt("itemid");
-            Integer predictquan = resultSet.getInt("predictedquantity");
-            String year = resultSet.getString("years");
+            Integer predictQuan = resultSet.getInt("predictedquantity");
+            String years = resultSet.getString("years");
 
-            Predict predict = new Predict(predictquan, itemID.toString(), reqID, year, itemName, proName);
-            predictList.add(predict);
+            CaseBased cbr = new CaseBased(cbrID, predictQuan, projectName, itemName, years);
+            predictList.add(cbr);
         }
-    }   catch (SQLException e) {
-      throw e;
+    } catch (SQLException e) {
+        throw e;
     }
     return predictList;
   }
+
 
   //Search Year
   public List<Predict> getPredicts(String year) throws SQLException {
     List<Predict> predictList = new ArrayList<>();
     try (Connection connection = dataSource.getConnection()) {
-        String query = "SELECT v.*, i.itemname, p.projectname FROM predicted_inventory v " +
-                       "JOIN item i ON (v.itemid = i.itemid) " +
-                       "JOIN project p ON (v.projectid = p.projectid) " +
+        String query = "SELECT v.*, i.itemname FROM cbr v" + 
+                       "JOIN project_item p ON (v.piid = p.piid)" +
+                       "JOIN item i ON (p.itemid = i.itemid)" +
                        "WHERE v.years LIKE ?";
         PreparedStatement preparedStatement = connection.prepareStatement(query);
         preparedStatement.setString(1, year ); // Use '%' for all years if no specific year is provided
@@ -75,7 +82,35 @@ public class PredictServices {
     }
     return predictList;
 }
-  
+
+//Get the Detail before retrieve from request and project_item
+    public Item getRetrieveDetails(int reqId, int piId) throws SQLException {
+            try (Connection connection = dataSource.getConnection()) {
+                String sql = "SELECT r.*, p.projectName, pi.piID " +
+                              "FROM request r " +
+                                    "JOIN project p ON r.projectID = p.projectID " + 
+                                    "JOIN project_item pi ON p.projectID = pi.projectID " + 
+                                    "WHERE r.status = 'approved' " +
+                                    "WHERE r.reqid = ?";
+                PreparedStatement statement = connection.prepareStatement(sql);
+                statement.setInt(1, reqId);
+                statement.setInt(2, piId);
+                ResultSet resultSet = statement.executeQuery();
+
+                if (resultSet.next()) {
+                    // String iname = resultSet.getString("itemname");
+                    // Integer iquantity = resultSet.getInt("itemquantity");
+                    // String icategory = resultSet.getString("category");
+                    // System.out.println(itemId);
+                    // return new Item(itemId, iname, iquantity, icategory);
+                }
+            } catch (SQLException e) {
+                throw e;
+            }
+            return null;
+        }
+
+//Retrieve Postmapping
   public void addPredict(Predict predict) throws SQLException {
     try (Connection connection = dataSource.getConnection()) {
         String insertPredictSql = "INSERT INTO predict_inventory(projectid, itemid, reqid, predictedquantity) VALUES(?,?,?,?)";
@@ -92,11 +127,17 @@ public class PredictServices {
     }
   }
 
+  //req data to predict (retrieve)
   public List<Request> getReq() throws SQLException {
     List<Request> requestList = new ArrayList<>();
     try (Connection connection = dataSource.getConnection()) {
 
-        PreparedStatement preparedStatement = connection.prepareStatement("SELECT r.*, p.projectname FROM request r JOIN project p ON (r.projectid = p.projectid) WHERE status = 'approved' ORDER BY reqid");
+        PreparedStatement preparedStatement = connection.prepareStatement("SELECT r.*, p.projectName, pi.piID " + 
+                    "FROM request r " + 
+                    "JOIN project p ON r.projectID = p.projectID " + 
+                    "JOIN project_item pi ON p.projectID = pi.projectID " + 
+                    "WHERE r.status = 'approved' " + 
+                    "ORDER BY r.reqID");
         ResultSet resultSet = preparedStatement.executeQuery();
 
         while (resultSet.next()) {

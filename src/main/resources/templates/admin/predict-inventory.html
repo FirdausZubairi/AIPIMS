@@ -47,7 +47,7 @@
                       <!-- Add New Prediction Button -->
                       <div class="text-end">
                       <a th:href="@{/prediction-request}">
-                        <button class="btn btn-primary btn-sm" type="button">Predict New Inventory</button>
+                        <button class="btn btn-primary btn-sm" type="button">Predict</button>
                       </a>
                       <a th:href="@{/create-project}">
                         <button class="btn btn-primary btn-sm" type="button">+New Project</button>
@@ -72,10 +72,10 @@
                 </thead>
                 <tbody>
                     <tr th:each="predict: ${Predict}">
-                        <td th:text="${predict.proName}"></td>         
+                        <td th:text="${predict.projectName}"></td>         
                         <td th:text="${predict.itemName}"></td> 
-                        <td th:text="${predict.predictquan}"></td>
-                        <td th:text="${predict.year}"></td>
+                        <td th:text="${predict.predictQuan}"></td>
+                        <td th:text="${predict.years}"></td>
                         <td>
                           
                             <!-- <a class="btn-primary btn-sm" th:href="@{/new-predict(rid=${request.rid})}"> -->

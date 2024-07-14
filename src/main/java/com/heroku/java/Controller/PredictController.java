@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.heroku.java.Model.CaseBased;
 import com.heroku.java.Model.Predict;
 import com.heroku.java.Model.Request;
 import com.heroku.java.Services.PredictServices;
@@ -26,9 +27,9 @@ public class PredictController {
     }
 
     @GetMapping("/predict-inventory")
-    public String itemPredict(Model model, Predict predict) {
+    public String itemPredict(Model model, CaseBased cbr) {
         try {
-            List<Predict> predictList = predictServices.getPredict();
+            List<CaseBased> predictList = predictServices.getPredict();
             model.addAttribute("Predict", predictList);
             return "admin/predict-inventory";
         } catch (SQLException e) {
