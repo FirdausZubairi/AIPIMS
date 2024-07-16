@@ -15,8 +15,33 @@ public class Request {
     private String sname;
     private String proname;
     private String iname;
+    private Integer iquantity;
+    private Integer piid;
 
     public Request() {
+    }
+
+    public Request(Integer rid, String proid, Integer reqQuantity, String rstatus, String proname, String iname,
+            Integer iquantity, Integer piid) {
+        this.rid = rid;
+        this.proid = proid;
+        this.reqQuantity = reqQuantity;
+        this.rstatus = rstatus;
+        this.proname = proname;
+        this.iname = iname;
+        this.iquantity = iquantity;
+        this.piid = piid;
+    }
+
+
+
+    public Request(Integer rid, String proid, Integer reqQuantity, String rstatus, String proname, Integer piid) {
+        this.rid = rid;
+        this.proid = proid;
+        this.reqQuantity = reqQuantity;
+        this.rstatus = rstatus;
+        this.proname = proname;
+        this.piid = piid;
     }
 
     public Request(Integer rid, String sname, String proname, Integer reqQuantity, String rstatus) {
@@ -146,4 +171,21 @@ public class Request {
     public void setIname(String iname) {
         this.iname = iname;
     }
+
+    public Integer getPiid() {
+        return piid;
+    }
+
+    public void setPiid(Integer piid) {
+        this.piid = piid;
+    }
+
+    public Integer getIquantity() {
+        return iquantity;
+    }
+
+    public void setIquantity(Integer iquantity) {
+        this.iquantity = iquantity;
+    }
+    
 }

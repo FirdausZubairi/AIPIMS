@@ -13,8 +13,6 @@ public class CaseBased {
     public CaseBased() {
     }
 
-    
-
     public CaseBased(Integer cbrID, Integer predictedQuan, String years, String itemName, String projectName) {
         this.cbrID = cbrID;
         this.predictedQuan = predictedQuan;

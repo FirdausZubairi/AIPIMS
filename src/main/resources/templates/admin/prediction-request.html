@@ -33,7 +33,9 @@
               <thead>
                   <tr>
                       <th scope="col">Project Name</th>
-                      <th scope="col">Quantity</th>
+                      <th scope="col">Request Project</th>
+                      <th scope="col">Item Name</th>
+                      <th scope="col">Item Quantity</th>
                       <th scope="col">Action</th>
                   </tr>
               </thead>
@@ -42,9 +44,10 @@
                   <tr th:each="request: ${Request}">
                       <td th:text="${request.proname}"></td>
                       <td th:text="${request.reqQuantity}"></td>
+                      <td th:text="${request.iname}"></td>
+                      <td th:text="${request.iquantity}"></td>
                       <td>
-                        <!-- <a class="btn-primary btn-sm" th:href="@{/new-predict(rid=${request.rid})}"> -->
-                        <a class="btn-primary btn-sm">
+                        <a class="btn-primary btn-sm" th:href="@{/new-predict(rid=${request.rid})}">
                             <button type="button" class="btn btn-primary btn-sm">predict</button></a>
                       </td>
                   </tr>

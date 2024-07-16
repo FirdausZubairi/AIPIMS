@@ -65,7 +65,7 @@ public class ItemController {
 
     @PostMapping("/update-item")
     public String updateItem(HttpSession session, @RequestParam(name = "iId") int itemId,
-                                @ModelAttribute("items") Item items, Model model) {
+                             @ModelAttribute("items") Item items, Model model) {
         try {
             itemServices.updateItem(itemId, items.getIname(), items.getIquantity(), items.getIcategory());
             return "redirect:/item";

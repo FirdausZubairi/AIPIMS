@@ -64,7 +64,7 @@ public class PredictController {
     }
 
     @GetMapping("/prediction-request")
-    public String predict(Model model, Request request) {
+    public String predict(Model model, Request request, CaseBased casebased) {
         try {
             List<Request> requestList = predictServices.getReq();
             model.addAttribute("Request", requestList);

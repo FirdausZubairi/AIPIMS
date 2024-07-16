@@ -131,13 +131,13 @@ public class PredictServices {
   public List<Request> getReq() throws SQLException {
     List<Request> requestList = new ArrayList<>();
     try (Connection connection = dataSource.getConnection()) {
-
-        PreparedStatement preparedStatement = connection.prepareStatement("SELECT r.*, p.projectName, pi.piID " + 
-                    "FROM request r " + 
-                    "JOIN project p ON r.projectID = p.projectID " + 
-                    "JOIN project_item pi ON p.projectID = pi.projectID " + 
-                    "WHERE r.status = 'approved' " + 
-                    "ORDER BY r.reqID");
+        PreparedStatement preparedStatement = connection.prepareStatement("SELECT r.*, p.projectName, pi.piID, pi.projectQuantity, i.itemname " +
+                            "FROM request r " + 
+                            "JOIN project p ON r.projectid = p.projectid " +
+                            "JOIN project_item pi ON p.projectid = pi.projectid " + 
+                            "JOIN item i ON pi.itemid = i.itemid " + 
+                            "WHERE r.status = 'approved' " + 
+                            "ORDER BY r.reqid");
         ResultSet resultSet = preparedStatement.executeQuery();
 
         while (resultSet.next()) {
@@ -146,8 +146,11 @@ public class PredictServices {
             String proname = resultSet.getString("projectname");
             Integer reqQuantity = resultSet.getInt("reqquantity");
             String rstatus = resultSet.getString("status");
+            String iname = resultSet.getString("itemname");
+            Integer piid = resultSet.getInt("piid");
+            Integer iquantity = resultSet.getInt("projectquantity");
 
-            Request request = new Request(rid, proid.toString(), proname, reqQuantity, rstatus);
+            Request request = new Request(rid, proid.toString(), reqQuantity, rstatus, proname, iname, iquantity, piid);
             requestList.add(request);
         }
     }   catch (SQLException e) {
