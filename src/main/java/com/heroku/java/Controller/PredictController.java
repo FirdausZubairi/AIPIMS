@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.heroku.java.Model.CaseBased;
+import com.heroku.java.Model.Item;
 import com.heroku.java.Model.Predict;
 import com.heroku.java.Model.Request;
 import com.heroku.java.Services.PredictServices;
@@ -40,21 +41,29 @@ public class PredictController {
 
     @GetMapping("/search-predict")
     public String searchPredicts(@RequestParam(name = "searchValue", required = false) String searchValue, Model model) throws SQLException {
-        List<Predict> predictList = predictServices.getPredicts(searchValue);
+        List<CaseBased> predictList = predictServices.getPredicts(searchValue);
         model.addAttribute("Predict", predictList);
         model.addAttribute("searchValue", searchValue);
         return "admin/predict-inventory";
     }
-
+        
     @GetMapping("/new-predict")
-    public String npredict() {
-        return "admin/new-predict";
+    public String shownpredict(@RequestParam("rid") int rId, @RequestParam("piid") int piId, Model model) {
+        try {
+                Request request = predictServices.getRetrieveDetails(rId,piId);
+                model.addAttribute("requests", request);
+                System.out.println("Req ID: " + rId);
+                return "admin/new-predict";
+            } catch (SQLException e) {
+                System.out.println("message : " + e.getMessage());
+                return "admin/dashboard-admin";
+            }
     }
 
     @PostMapping("/new-predict")
-    public String addPredict(@ModelAttribute("predict") Predict predict) {
+    public String addPredict(@ModelAttribute("requests") CaseBased casebased) {
         try {
-            predictServices.addPredict(predict);
+            predictServices.addPredict(casebased);
             return "redirect:/predict-inventory";
         } catch (SQLException e) {
             System.out.println("message : " + e.getMessage());

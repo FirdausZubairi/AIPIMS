@@ -50,7 +50,7 @@
                         <button class="btn btn-primary btn-sm" type="button">Predict</button>
                       </a>
                       <a th:href="@{/create-project}">
-                        <button class="btn btn-primary btn-sm" type="button">+New Project</button>
+                        <button class="btn btn-success btn-sm" type="button">+Project</button>
                       </a>
                       </div>
                       
@@ -74,14 +74,15 @@
                     <tr th:each="predict: ${Predict}">
                         <td th:text="${predict.projectName}"></td>         
                         <td th:text="${predict.itemName}"></td> 
-                        <td th:text="${predict.predictQuan}"></td>
+                        <td th:text="${predict.predictedQuan}"></td>
                         <td th:text="${predict.years}"></td>
                         <td>
                           
                             <!-- <a class="btn-primary btn-sm" th:href="@{/new-predict(rid=${request.rid})}"> -->
+                              <a class="btn-primary btn-sm">
+                                <button type="button" class="btn btn-success btn-sm">+Stock</button></a>
                             <a class="btn-primary btn-sm">
-                                <button type="button" class="btn btn-success btn-sm">revised</button></a>
-                          
+                                <button type="button" class="btn btn-primary btn-sm">Revised</button></a>                          
                         </td>
                     </tr>
                 </tbody>

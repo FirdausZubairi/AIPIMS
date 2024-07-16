@@ -33,7 +33,21 @@ public class Request {
         this.piid = piid;
     }
 
-
+    public Request(Integer rid, Integer reqQuantity, String proname, String iname, Integer iquantity, Integer piid) {
+        this.rid = rid;
+        this.reqQuantity = reqQuantity;
+        this.proname = proname;
+        this.iname = iname;
+        this.iquantity = iquantity;
+        this.piid = piid;
+    }
+    
+    public Request( Integer reqQuantity, String proname, String iname, Integer iquantity) {
+        this.reqQuantity = reqQuantity;
+        this.proname = proname;
+        this.iname = iname;
+        this.iquantity = iquantity;
+    }
 
     public Request(Integer rid, String proid, Integer reqQuantity, String rstatus, String proname, Integer piid) {
         this.rid = rid;

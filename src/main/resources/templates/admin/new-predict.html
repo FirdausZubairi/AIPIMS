@@ -43,8 +43,7 @@
           </div>
           <div class="col-md-6">
             <div class="card-body">
-              <!-- th:action="@{/new-predict?rid=} + ${request.rid}" -->
-                <form method="post" th:action="@{/new-predict}" modelAttribute="predicts">
+                <form method="post" th:action="@{/new-predict?rid=} + ${requests.rid}" modelAttribute="requests">
                     <h3>Retrieve</h3>
 
                     <div class="col mb-3">
@@ -52,11 +51,22 @@
                           <input type="hidden"
                            id="requestid"
                            class="form-control"
-                           
-                           name="rid"
+                           name="reqID"
+                           th:value = "${requests.rid}"
                            required>
                       </div>
                       </div> 
+
+                      <div class="col mb-3">
+                        <div class="col-8">
+                            <input type="hidden"
+                             id="projectitemid"
+                             class="form-control"
+                             name="piid"
+                             th:value = "${requests.piid}"
+                             required>
+                        </div>
+                        </div> 
                       <br>
 
                       
@@ -65,17 +75,17 @@
                           >Project Name</label>
                           <select
                           id="project"
-                          name="proID"
+                          name="proname"
                           class="form-select"
                           required
                         >
                           <option value="" disabled selected>Select Option</option>
-                          <option value="1" >Appartment House 2 Room</option>
-                          <option value="2" >Appartment House 3 Room</option>
-                          <option value="3" >Teres House 3 Room</option>
-                          <option value="4" >Teres House 4 Room</option>
-                          <option value="5" >Banglo House 4 Room</option>
-                          <option value="6" >Banglo House 5 Room</option>
+                          <option value="Appartment-2Room" th:selected="${requests.proname == 'Appartment-2Room'}" >Appartment House 2 Room</option>
+                          <option value="Appartment-3Room" th:selected="${requests.proname == 'Appartment-3Room'}" >Appartment House 3 Room</option>
+                          <option value="Teres-3Room" th:selected="${requests.proname == 'Teres-3Room'}" >Teres House 3 Room</option>
+                          <option value="Teres-4Room" th:selected="${requests.proname == 'Teres-4Room'}" >Teres House 4 Room</option>
+                          <option value="Banglo-4Room" th:selected="${requests.proname == 'Banglo-4Room'}" >Banglo House 4 Room</option>
+                          <option value="Banglo-5Room" th:selected="${requests.proname == 'Banglo-5Room'}" >Banglo House 5 Room</option>
                         </select>
                         </div>
     
@@ -86,6 +96,7 @@
                              id="requestQuantity" onkeyup="calculatePrediction()"
                              class="form-control"
                              name="reqQuan"
+                             th:value = "${requests.reqQuantity}"
                              placeholder="Request quantity"
                               required>
                         </div>
@@ -101,16 +112,16 @@
                         >
                         <select
                           id="project"
-                          name="item1"
+                          name="iname"
                           class="form-select"
                           required
                         >
                           <option value="" disabled selected>Select Option</option>
-                          <option value="1" >Wire 1.5mm</option>
-                          <option value="2" >Lamp</option>
-                          <option value="3" >Switch</option>
-                          <option value="4" >Socket Outlet</option>
-                          <option value="5" >Distribution Board (DB)</option>
+                          <option value="Wire 1.5mm" th:selected="${requests.iname == 'Wire 1.5mm'}" >Wire 1.5mm</option>
+                          <option value="Lamp" th:selected="${requests.iname == 'Lamp'}">Lamp</option>
+                          <option value="Switch" th:selected="${requests.iname == 'Switch'}">Switch</option>
+                          <option value="Socket Outlet" th:selected="${requests.iname == 'Socket Outlet'}">Socket Outlet</option>
+                          <option value="Distribution Board (DB)" th:selected="${requests.iname == 'Distribution Board (DB)'}">Distribution Board (DB)</option>
                         </select>
                     </div>
 
@@ -119,7 +130,8 @@
                       <input type="text"
                            id="itemQuantity" onkeyup="calculatePrediction()"
                            class="form-control"
-                           name="itemQuan"
+                           name="iquantity"
+                           th:value = "${requests.iquantity}"
                            placeholder="Item quantity"
                            required>
                     </div>
@@ -129,11 +141,35 @@
                       <input type="text"
                              id="predictedQuantity" 
                              class="prediction form-control"
-                             name="predictQuan"
+                             name="predictedQuan"
                              placeholder="0"
                              required readonly>                    
                     </div>
-                  
+                    <div class="col-8 mb-3 col-sm-8">
+                      <label for="inputProject" name="years" class="form-label"
+                          >Year </label
+                        >
+                        <select
+                          id="project"
+                          name="years"
+                          class="form-select"
+                          required
+                        >
+                          <option value="" disabled selected>Select Option</option>
+                          <option value="2025">2025</option>
+                          <option value="2026">2026</option>
+                          <option value="2027">2027</option>
+                        </select>
+                    </div>
+
+                    <div class="col-8 mb-3">
+                      <label hidden for="inputProject" name="rstatus" class="form-label">Status</label>
+                      <select hidden id="status" name="rstatus" type="hidden" class="form-select" required>
+                      <option type="hidden" value="predicted">
+                              predicted
+                      </option>
+                      </select>
+                  </div>
                                   
                     <!-- test end -->
                     <div class="col-12">

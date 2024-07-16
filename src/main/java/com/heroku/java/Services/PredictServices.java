@@ -44,7 +44,7 @@ public class PredictServices {
             Integer predictQuan = resultSet.getInt("predictedquantity");
             String years = resultSet.getString("years");
 
-            CaseBased cbr = new CaseBased(cbrID, predictQuan, projectName, itemName, years);
+            CaseBased cbr = new CaseBased(cbrID, predictQuan, years, itemName, projectName);
             predictList.add(cbr);
         }
     } catch (SQLException e) {
@@ -55,27 +55,27 @@ public class PredictServices {
 
 
   //Search Year
-  public List<Predict> getPredicts(String year) throws SQLException {
-    List<Predict> predictList = new ArrayList<>();
+  public List<CaseBased> getPredicts(String year) throws SQLException {
+    List<CaseBased> predictList = new ArrayList<>();
     try (Connection connection = dataSource.getConnection()) {
-        String query = "SELECT v.*, i.itemname FROM cbr v" + 
-                       "JOIN project_item p ON (v.piid = p.piid)" +
-                       "JOIN item i ON (p.itemid = i.itemid)" +
+        String query = "SELECT v.*, i.itemname, p.projectname FROM cbr v " +
+                       "JOIN project_item pt ON (v.piid = pt.piid) " +
+                       "JOIN item i ON (pt.itemid = i.itemid) " + 
+                       "JOIN project p ON (pt.projectid = p.projectid)" +
                        "WHERE v.years LIKE ?";
         PreparedStatement preparedStatement = connection.prepareStatement(query);
         preparedStatement.setString(1, year ); // Use '%' for all years if no specific year is provided
         ResultSet resultSet = preparedStatement.executeQuery();
 
         while (resultSet.next()) {
-            Integer reqID = resultSet.getInt("reqid");
-            String proName = resultSet.getString("projectname");
+            Integer cbrID = resultSet.getInt("cbrid");
+            String projectName = resultSet.getString("projectname");
             String itemName = resultSet.getString("itemname");
-            Integer itemID = resultSet.getInt("itemid");
-            Integer predictquan = resultSet.getInt("predictedquantity");
-            String yearResult = resultSet.getString("years");
+            Integer predictQuan = resultSet.getInt("predictedquantity");
+            String years = resultSet.getString("years");
 
-            Predict predict = new Predict(predictquan, itemID.toString(), reqID, yearResult, itemName, proName);
-            predictList.add(predict);
+            CaseBased casebased = new CaseBased(cbrID, predictQuan, years, itemName, projectName);
+            predictList.add(casebased);
         }
     } catch (SQLException e) {
         throw e;
@@ -83,42 +83,48 @@ public class PredictServices {
     return predictList;
 }
 
-//Get the Detail before retrieve from request and project_item
-    public Item getRetrieveDetails(int reqId, int piId) throws SQLException {
+    //Get the Detail before retrieve from request and project_item
+    public Request getRetrieveDetails(int rId, int piId) throws SQLException {
             try (Connection connection = dataSource.getConnection()) {
-                String sql = "SELECT r.*, p.projectName, pi.piID " +
-                              "FROM request r " +
-                                    "JOIN project p ON r.projectID = p.projectID " + 
-                                    "JOIN project_item pi ON p.projectID = pi.projectID " + 
-                                    "WHERE r.status = 'approved' " +
-                                    "WHERE r.reqid = ?";
+                String sql = "SELECT r.*, p.projectName, pi.piID, pi.projectQuantity, i.itemname " +
+                            "FROM request r " + 
+                            "JOIN project p ON r.projectid = p.projectid " +
+                            "JOIN project_item pi ON p.projectid = pi.projectid " + 
+                            "JOIN item i ON pi.itemid = i.itemid " + 
+                            "WHERE r.status = 'approved' " + 
+                                    "AND r.reqid = ? AND pi.piid = ?";
                 PreparedStatement statement = connection.prepareStatement(sql);
-                statement.setInt(1, reqId);
+                statement.setInt(1, rId);
                 statement.setInt(2, piId);
                 ResultSet resultSet = statement.executeQuery();
 
                 if (resultSet.next()) {
-                    // String iname = resultSet.getString("itemname");
-                    // Integer iquantity = resultSet.getInt("itemquantity");
-                    // String icategory = resultSet.getString("category");
-                    // System.out.println(itemId);
-                    // return new Item(itemId, iname, iquantity, icategory);
-                }
+
+                    String proname = resultSet.getString("projectname");
+                    Integer reqQuantity = resultSet.getInt("reqquantity");
+                    String iname = resultSet.getString("itemname");
+                    Integer iquantity = resultSet.getInt("projectquantity");
+
+                    System.out.println("Request ID: " + rId);
+                    System.out.println("Project_Item ID: " + piId);
+
+                   return new Request(rId, reqQuantity, proname,  iname, iquantity, piId);
+                } 
             } catch (SQLException e) {
                 throw e;
             }
             return null;
         }
 
-//Retrieve Postmapping
-  public void addPredict(Predict predict) throws SQLException {
+  //Retrieve Postmapping
+  public void addPredict(CaseBased casebased) throws SQLException {
     try (Connection connection = dataSource.getConnection()) {
-        String insertPredictSql = "INSERT INTO predict_inventory(projectid, itemid, reqid, predictedquantity) VALUES(?,?,?,?)";
+        String insertPredictSql = "INSERT INTO cbr(reqid, piid, predictedquantity, years) VALUES(?,?,?,?)";
         PreparedStatement insertStatement = connection.prepareStatement(insertPredictSql);
-        insertStatement.setInt(1, Integer.parseInt(predict.getProID()));
-        insertStatement.setInt(2, Integer.parseInt(predict.getItemID()));
-        insertStatement.setInt(3, predict.getReqID());
-        insertStatement.setInt(4, predict.getPredictquan());
+        insertStatement.setInt(1, casebased.getReqID());
+        insertStatement.setInt(2, casebased.getPiid());
+        insertStatement.setInt(3, casebased.getPredictedQuan());
+        insertStatement.setString(4, casebased.getYears());
   
         insertStatement.executeUpdate();
 
