@@ -9,8 +9,23 @@ public class CaseBased {
 
     private String itemName;
     private String projectName;
-    
+    private Integer reqQuantity;
+    private Integer iquantity;
+    private Integer itemid;
+
     public CaseBased() {
+    }
+
+    public CaseBased(Integer cbrID, Integer predictedQuan, String years, Integer reqID, Integer piid, Integer itemid ,String itemName, String projectName , Integer iquantity) {
+    this.cbrID = cbrID;
+    this.predictedQuan = predictedQuan;
+    this.years = years;
+    this.reqID = reqID;
+    this.piid = piid;
+    this.itemName = itemName;
+    this.projectName = projectName;
+    this.itemid = itemid;
+    this.iquantity = iquantity;
     }
 
     public CaseBased(Integer cbrID, Integer predictedQuan, String years, String itemName, String projectName) {
@@ -20,8 +35,6 @@ public class CaseBased {
         this.itemName = itemName;
         this.projectName = projectName;
     }
-
-
 
     public CaseBased(Integer cbrID, Integer predictedQuan, String years, Integer reqID, Integer piid, String itemName,
             String projectName) {
@@ -34,7 +47,33 @@ public class CaseBased {
         this.projectName = projectName;
     }
 
+    public CaseBased(Integer cbrID, Integer predictedQuan, String years, Integer reqID, Integer piid, String itemName, String projectName, Integer reqQuantity, Integer iquantity) {
+        this.cbrID = cbrID;
+        this.predictedQuan = predictedQuan;
+        this.years = years;
+        this.reqID = reqID;
+        this.piid = piid;
+        this.itemName = itemName;
+        this.projectName = projectName;
+        this.reqQuantity = reqQuantity;
+        this.iquantity = iquantity;
+    }
 
+    public Integer getReqQuantity() {
+        return reqQuantity;
+    }
+
+    public void setReqQuantity(Integer reqQuantity) {
+        this.reqQuantity = reqQuantity;
+    }
+
+    public Integer getIquantity() {
+        return iquantity;
+    }
+
+    public void setIquantity(Integer iquantity) {
+        this.iquantity = iquantity;
+    }
 
     public Integer getCbrID() {
         return cbrID;
@@ -90,6 +129,14 @@ public class CaseBased {
 
     public void setProjectName(String projectName) {
         this.projectName = projectName;
+    }
+
+    public Integer getItemid() {
+        return itemid;
+    }
+
+    public void setItemid(Integer itemid) {
+        this.itemid = itemid;
     }
 
     

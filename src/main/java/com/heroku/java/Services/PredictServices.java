@@ -8,11 +8,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.sql.DataSource;
-import org.springframework.beans.factory.annotation.Autowired;
+// import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.heroku.java.Model.Predict;
 import com.heroku.java.Model.CaseBased;
-import com.heroku.java.Model.Item;
 // import jakarta.servlet.http.HttpSession;
 import com.heroku.java.Model.Request;
 
@@ -21,7 +19,7 @@ public class PredictServices {
   private final DataSource dataSource;
 
 
-  @Autowired
+//   @Autowired
   public PredictServices(DataSource dataSource) {
     this.dataSource = dataSource;
   }
@@ -30,10 +28,11 @@ public class PredictServices {
     List<CaseBased> predictList = new ArrayList<>();
     try (Connection connection = dataSource.getConnection()) {
         PreparedStatement preparedStatement = connection.prepareStatement(
-            "SELECT v.*, i.itemname, p.projectname FROM cbr v " +
+            "SELECT v.*,i.itemid, i.itemquantity, i.itemname, p.projectname FROM cbr v " +
             "JOIN project_item pt ON (v.piid = pt.piid) " +
             "JOIN item i ON (pt.itemid = i.itemid) " + 
-            "JOIN project p ON (pt.projectid = p.projectid)"
+            "JOIN project p ON (pt.projectid = p.projectid)" +
+            "ORDER BY pt.piid"
         );
         ResultSet resultSet = preparedStatement.executeQuery();
 
@@ -43,9 +42,13 @@ public class PredictServices {
             String itemName = resultSet.getString("itemname");
             Integer predictQuan = resultSet.getInt("predictedquantity");
             String years = resultSet.getString("years");
+            Integer reqID = resultSet.getInt("reqid");
+            Integer piid = resultSet.getInt("piid");
+            Integer itemid = resultSet.getInt("itemid");
+            Integer iquantity = resultSet.getInt("itemquantity");
 
-            CaseBased cbr = new CaseBased(cbrID, predictQuan, years, itemName, projectName);
-            predictList.add(cbr);
+            CaseBased cbr = new CaseBased(cbrID, predictQuan, years, reqID, piid, itemid, itemName, projectName, iquantity);
+            predictList.add(cbr); 
         }
     } catch (SQLException e) {
         throw e;
@@ -58,10 +61,11 @@ public class PredictServices {
   public List<CaseBased> getPredicts(String year) throws SQLException {
     List<CaseBased> predictList = new ArrayList<>();
     try (Connection connection = dataSource.getConnection()) {
-        String query = "SELECT v.*, i.itemname, p.projectname FROM cbr v " +
-                       "JOIN project_item pt ON (v.piid = pt.piid) " +
-                       "JOIN item i ON (pt.itemid = i.itemid) " + 
-                       "JOIN project p ON (pt.projectid = p.projectid)" +
+        String query = "SELECT v.*, i.itemid, i.itemquantity, i.itemname, p.projectname FROM cbr v " +
+                        "JOIN project_item pt ON (v.piid = pt.piid) " +
+                        "JOIN item i ON (pt.itemid = i.itemid) " + 
+                        "JOIN project p ON (pt.projectid = p.projectid) " +
+                        // "ORDER BY pt.piid " +
                        "WHERE v.years LIKE ?";
         PreparedStatement preparedStatement = connection.prepareStatement(query);
         preparedStatement.setString(1, year ); // Use '%' for all years if no specific year is provided
@@ -73,16 +77,20 @@ public class PredictServices {
             String itemName = resultSet.getString("itemname");
             Integer predictQuan = resultSet.getInt("predictedquantity");
             String years = resultSet.getString("years");
+            Integer reqID = resultSet.getInt("reqid");
+            Integer piid = resultSet.getInt("piid");
+            Integer itemid = resultSet.getInt("itemid");
+            Integer iquantity = resultSet.getInt("itemquantity");
 
-            CaseBased casebased = new CaseBased(cbrID, predictQuan, years, itemName, projectName);
-            predictList.add(casebased);
+            CaseBased cbr = new CaseBased(cbrID, predictQuan, years, reqID, piid, itemid, itemName, projectName, iquantity);
+            predictList.add(cbr); 
         }
     } catch (SQLException e) {
         throw e;
     }
     return predictList;
 }
-
+//===================RETRIEVE=============================
     //Get the Detail before retrieve from request and project_item
     public Request getRetrieveDetails(int rId, int piId) throws SQLException {
             try (Connection connection = dataSource.getConnection()) {
@@ -137,13 +145,16 @@ public class PredictServices {
   public List<Request> getReq() throws SQLException {
     List<Request> requestList = new ArrayList<>();
     try (Connection connection = dataSource.getConnection()) {
-        PreparedStatement preparedStatement = connection.prepareStatement("SELECT r.*, p.projectName, pi.piID, pi.projectQuantity, i.itemname " +
-                            "FROM request r " + 
-                            "JOIN project p ON r.projectid = p.projectid " +
-                            "JOIN project_item pi ON p.projectid = pi.projectid " + 
-                            "JOIN item i ON pi.itemid = i.itemid " + 
-                            "WHERE r.status = 'approved' " + 
-                            "ORDER BY r.reqid");
+        PreparedStatement preparedStatement = connection.prepareStatement("SELECT r.*, p.projectName, pi.piID, pi.projectQuantity, i.itemname, " +
+                                                                        "cbr.predictedquantity " +
+                                                                        "FROM request r " +
+                                                                        "JOIN project p ON r.projectid = p.projectid " +
+                                                                        "JOIN project_item pi ON p.projectid = pi.projectid " +
+                                                                        "JOIN item i ON pi.itemid = i.itemid " +
+                                                                        "LEFT JOIN cbr ON r.reqid = cbr.reqid AND pi.piID = cbr.piid " +
+                                                                        "WHERE r.status = 'approved' AND cbr.predictedquantity IS NULL " +
+                                                                        "ORDER BY r.reqid");
+                            
         ResultSet resultSet = preparedStatement.executeQuery();
 
         while (resultSet.next()) {
@@ -164,5 +175,68 @@ public class PredictServices {
     }
     return requestList;
   }
+//======================REUSE==================================
+    public void restockItem(Integer iQuantity, Integer itemId) throws SQLException {
+        System.out.println("New Quantity : " + iQuantity);
+        try (Connection connection = dataSource.getConnection()) {
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                "UPDATE item SET itemquantity = ? WHERE itemid = ?"
+            );
+            preparedStatement.setInt(1, iQuantity);
+            preparedStatement.setInt(2, itemId);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw e;
+        }
+    }
 
+
+//======================REVISED=================================
+    public CaseBased getRevisedDetails(int cbrId) throws SQLException {
+        try (Connection connection = dataSource.getConnection()) {
+            String sql = "SELECT r.reqquantity, p.projectName, pi.projectQuantity, i.itemname, c.* " +
+                        "FROM request r " + 
+                        "JOIN project p ON r.projectid = p.projectid " +
+                        "JOIN project_item pi ON p.projectid = pi.projectid " + 
+                        "JOIN item i ON pi.itemid = i.itemid " + 
+                        "JOIN cbr c ON pi.piid = c.piid " +
+                        "WHERE c.cbrid = ?";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setInt(1, cbrId);
+            ResultSet resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                String projectName = resultSet.getString("projectname");
+                Integer reqQuantity = resultSet.getInt("reqquantity");
+                String itemName = resultSet.getString("itemname");
+                Integer iquantity = resultSet.getInt("projectquantity");
+                Integer predictedQuan = resultSet.getInt("predictedquantity");
+                String years = resultSet.getString("years");
+                Integer reqID = resultSet.getInt("reqid");
+                Integer piid = resultSet.getInt("piid");
+
+                return new CaseBased(cbrId, predictedQuan, years, reqID, piid, itemName, projectName, reqQuantity, iquantity);
+            }
+        } catch (SQLException e) {
+            throw e;
+        }
+        return null;
+    }
+
+    public void RevisedPredict(int cbrId, int reqID, int piid, int predictedQuan, String years) throws SQLException {
+        try (Connection connection = dataSource.getConnection()) {
+            String insertPredictSql = "UPDATE cbr SET reqid = ?, piid = ?, predictedquantity = ?, years = ? WHERE cbrid = ?";
+            PreparedStatement insertStatement = connection.prepareStatement(insertPredictSql);
+            insertStatement.setInt(1, reqID);
+            insertStatement.setInt(2, piid);
+            insertStatement.setInt(3, predictedQuan);
+            insertStatement.setString(4, years);
+            insertStatement.setInt(5, cbrId);
+      
+            insertStatement.executeUpdate();
+    
+        } catch (SQLException e) {
+            throw e;
+        }
+      }
 }

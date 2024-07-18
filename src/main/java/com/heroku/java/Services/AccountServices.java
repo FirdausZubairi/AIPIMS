@@ -8,7 +8,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import javax.sql.DataSource;
-import org.springframework.beans.factory.annotation.Autowired;
+// import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.heroku.java.Model.Users;
 import jakarta.servlet.http.HttpSession;
@@ -18,7 +18,7 @@ public class AccountServices {
   private final DataSource dataSource;
   private final HttpSession session;
 
-  @Autowired
+//   @Autowired
   public AccountServices(DataSource dataSource, HttpSession session) {
     this.dataSource = dataSource;
     this.session = session;

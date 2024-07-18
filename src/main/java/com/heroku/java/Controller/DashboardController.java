@@ -1,6 +1,6 @@
 package com.heroku.java.Controller;             
 
-import org.springframework.beans.factory.annotation.Autowired;
+// import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import com.heroku.java.Services.DashboardServices;
@@ -11,7 +11,7 @@ import java.sql.SQLException;
 public class DashboardController {
     private DashboardServices dashboardServices;
 
-    @Autowired
+    // @Autowired
     public DashboardController(DashboardServices dashboardServices) {
         this.dashboardServices = dashboardServices;
     }

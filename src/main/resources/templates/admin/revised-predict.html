@@ -45,92 +45,141 @@
           </div>
           <div class="col-md-6">
             <div class="card-body">
-                <form method="post" th:action="@{/new-predict}" modelAttribute="predict">
-                    <h3>Predict</h3><br>
-                    <div class="col-8 mb-3 col-sm-8">
-                      <label for="inputProject" name="proid" class="form-label"
-                        >Project Type</label
-                      >
-                      <select
-                        id="project"
-                        name="proID"
-                        class="form-select"
-                        required
-                      >
-                        <option value="" disabled selected>Select Option</option>
-                        <option value="1">Appartment House 2 Room</option>
-                        <option value="2">Appartment House 3 Room</option>
-                        <option value="3">Teres House 3 Room</option>
-                        <option value="4">Teres House 4 Room</option>
-                        <option value="5">Banglo House 4 Room</option>
-                        <option value="6">Banglo House 5 Room</option>
-                      </select>
-                    </div>
-
-                    <div class="col-8 mb-3 col-sm-8">
-                      <label for="inputProject" name="iname" class="form-label"
-                        >Item Name</label
-                      >
-                      <select
-                        id="project"
-                        name="itemID"
-                        class="form-select"
-                        required
-                      >
-                        <option value="" disabled selected>Select Option</option>
-                        <option value="1">Wire 1.5mm</option>
-                        <option value="2">Lamp</option>
-                        <option value="3">Switch</option>
-                        <option value="4">Socket Outlet</option>
-                        <option value="5">Distribution Board (DB)</option>
-                      </select>
-                    </div>
-            
-                    <div class="col mb-3">
-                      <label for="name" class="col col-form-label">Request Quantity</label>
-                      <div class="col-sm-8">
-                          <input type="text"
-                           id="requestQuantity" onkeyup="calculatePrediction()"
-                           class="form-control"
-                           name="reqQuan"
-                           placeholder="Request quantity"
-                            required>
-                      </div>
-                      </div> 
+                <form method="post" th:action="@{/revised-predict?cbrid=} + ${requests.cbrID}" modelAttribute="requests">
+                    <h3>Retrieve</h3>
 
                     <div class="col mb-3">
-                      <label for="name" class="col col-form-label">Item Quantity</label>
-                      <div class="col-sm-8">
-                          <input type="text"
-                           id="itemQuantity" onkeyup="calculatePrediction()"
+                      <div class="col-8">
+                          <input type="hidden"
+                           id="requestid"
                            class="form-control"
-                           name="itemQuan"
-                           placeholder="Item quantity"
+                           name="cbrID"
+                           th:value = "${requests.cbrID}"
                            required>
                       </div>
                       </div> 
 
                       <div class="col mb-3">
-                        <label for="name" class="col col-form-label">Predicted Item</label>
-                        <div class="col-sm-8">
-                          <input type="text"
-                          id="predictedQuantity" 
-                          class="prediction form-control"
-                          name="predictQuan"
-                          placeholder="0"
-                          required readonly> 
+                        <div class="col-8">
+                            <input type="hidden"
+                             id="requestid"
+                             class="form-control"
+                             name="reqID"
+                             th:value = "${requests.reqID}"
+                             required>
                         </div>
                         </div>
 
-                    <!-- <label for="inputPassword3" class="col col-form-label">Predicted Quantity</label>
-                    <div class="col-sm-8">
-                      <input type="number" name="predictQuan" id="teamstats"
-                          class="netPredict form-control form-control-lg bg-light fs-6 text-uppercase"
-                          placeholder="Predicted Quantity" disabled>
-                      <label for="floatingInputGrid">Item Predicted: </label>
-                    </div> -->
+                      <div class="col mb-3">
+                        <div class="col-8">
+                            <input type="hidden"
+                             id="projectitemid"
+                             class="form-control"
+                             name="piid"
+                             th:value = "${requests.piid}"
+                             required>
+                        </div>
+                        </div> 
+                      <br>
 
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                      
+                      <div class="col-8 mb-3 col-sm-8">
+                          <label for="inputProject" name="proID" class="form-label"
+                          >Project Name</label>
+                          <select
+                          id="project"
+                          name="projectName"
+                          class="form-select"
+                          required
+                        >
+                          <option value="" disabled selected>Select Option</option>
+                          <option value="Appartment-2Room" th:selected="${requests.projectName == 'Appartment-2Room'}" >Appartment House 2 Room</option>
+                          <option value="Appartment-3Room" th:selected="${requests.projectName == 'Appartment-3Room'}" >Appartment House 3 Room</option>
+                          <option value="Teres-3Room" th:selected="${requests.projectName == 'Teres-3Room'}" >Teres House 3 Room</option>
+                          <option value="Teres-4Room" th:selected="${requests.projectName == 'Teres-4Room'}" >Teres House 4 Room</option>
+                          <option value="Banglo-4Room" th:selected="${requests.projectName == 'Banglo-4Room'}" >Banglo House 4 Room</option>
+                          <option value="Banglo-5Room" th:selected="${requests.projectName == 'Banglo-5Room'}" >Banglo House 5 Room</option>
+                        </select>
+                        </div>
+    
+                        <div class="col-8 mb-3 col-sm-8">
+                          <label for="name" class="form-label">Request Quantity</label>
+                          <div class="form-label">
+                            <input type="text"
+                             id="requestQuantity" onkeyup="calculatePrediction()"
+                             class="form-control"
+                             name="reqQuan"
+                             th:value = "${requests.reqQuantity}"
+                             placeholder="Request quantity"
+                              required>
+                        </div>
+                        </div>                   
+          
+                  
+                                
+                    <!-- testt -->
+                  
+                    <div class="col-8 mb-3 col-sm-8">
+                      <label for="inputProject" name="itemID" class="form-label"
+                          >Item </label
+                        >
+                        <select
+                          id="project"
+                          name="itemName"
+                          class="form-select"
+                          required
+                        >
+                          <option value="" disabled selected>Select Option</option>
+                          <option value="Wire 1.5mm" th:selected="${requests.itemName == 'Wire 1.5mm'}" >Wire 1.5mm</option>
+                          <option value="Lamp" th:selected="${requests.itemName == 'Lamp'}">Lamp</option>
+                          <option value="Switch" th:selected="${requests.itemName == 'Switch'}">Switch</option>
+                          <option value="Socket Outlet" th:selected="${requests.itemName == 'Socket Outlet'}">Socket Outlet</option>
+                          <option value="Distribution Board (DB)" th:selected="${requests.itemName == 'Distribution Board (DB)'}">Distribution Board (DB)</option>
+                        </select>
+                    </div>
+
+                    <div class="col-8 mb-3 col-sm-8">
+                      <label for="name" class="form-label">Item Quantity</label>
+                      <input type="text"
+                           id="itemQuantity" onkeyup="calculatePrediction()"
+                           class="form-control"
+                           name="iquantity"
+                           th:value = "${requests.iquantity}"
+                           placeholder="Item quantity"
+                           required>
+                    </div>
+                    
+                    <div class="col-8 mb-3 col-sm-8">
+                      <label for="inputZip" class="form-label">Predicted Item</label>
+                      <input type="text"
+                             id="predictedQuantity" 
+                             class="prediction form-control"
+                             name="predictedQuan"
+                             th:value = "${requests.predictedQuan}"
+                             placeholder="0"
+                             required readonly>                    
+                    </div>
+                    <div class="col-8 mb-3 col-sm-8">
+                      <label for="inputProject" name="years" class="form-label"
+                          >Year </label
+                        >
+                        <select
+                          id="project"
+                          name="years"
+                          class="form-select"
+                          required
+                        >
+                          <option value="" disabled selected>Select Option</option>
+                          <option value="2025" th:selected="${requests.years == '2025'}">2025</option>
+                          <option value="2026" th:selected="${requests.years == '2026'}">2026</option>
+                          <option value="2027" th:selected="${requests.years == '2027'}">2027</option>
+                        </select>
+                    </div>
+                                  
+                    <!-- test end -->
+                    <div class="col-12">
+                      <button type="submit" class="btn btn-primary">Submit</button>
+                  </div>
                 </form>
             </div>
           </div>
@@ -148,30 +197,12 @@
                 var predictedQuantity = document.getElementById("predictedQuantity");
 
               if (requestQuantity && itemQuantity) {
-                    predictedQuantity.innerText = requestQuantity * itemQuantity * 2;
+                    predictedQuantity.value = requestQuantity * itemQuantity * 2;
               } else {
-                    predictedQuantity.innerText = 0;
+                    predictedQuantity.value = 0;
               }
             }
 
-        //     function updateTeamStats() {
-        //     let totalStats = 0;
-        //     const totalPlayer = addedPlayers.length;
-
-        //     // Calculate total stats
-        //     addedPlayers.forEach(player => {
-        //         totalStats += player.stats;
-        //     });
-
-        //     // Calculate team stats
-        //     const teamStats = totalPlayer === 0 ? 0 : totalStats / totalPlayer;
-
-        //     // Enable the teamstats input field
-        //     document.getElementById('teamstats').removeAttribute('disabled');
-
-        //     // Update the team stats input field
-        //     document.getElementById('teamstats').value = Math.round(teamStats);
-        // }
           </script>
 
             <script

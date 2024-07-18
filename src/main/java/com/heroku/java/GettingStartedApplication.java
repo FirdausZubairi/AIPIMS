@@ -1,6 +1,6 @@
 package com.heroku.java;
 
-import org.springframework.beans.factory.annotation.Autowired;
+// import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.stereotype.Controller;
@@ -15,7 +15,7 @@ import java.util.Map;
 public class GettingStartedApplication {
     private final DataSource dataSource;
 
-    @Autowired
+    // @Autowired
     public GettingStartedApplication(DataSource dataSource) {
         this.dataSource = dataSource;
     }  
