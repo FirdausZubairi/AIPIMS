@@ -44,7 +44,7 @@
           <div class="col-md-6">
             <div class="card-body">
                 <form method="post" th:action="@{/new-predict?rid=} + ${requests.rid}" modelAttribute="requests">
-                    <h3>Retrieve</h3>
+                    <h3>Retain Prediction</h3>
 
                     <div class="col mb-3">
                       <div class="col-8">
@@ -172,9 +172,12 @@
         </div>
       </div>
   </div>
-        <footer class="d-flex justify-content-center col-8 offset-3">
-          <p>&copy; <span id="currentYear"></span> AI Power Inventory Management System. All rights reserved.</p>
-        </footer>
+  <footer class="d-flex justify-content-center">
+    <p>&copy; <span id="currentYear"></span> AI Power Inventory Management System. All rights reserved.</p>
+  </footer>
+      <script>
+        document.getElementById("currentYear").textContent = new Date().getFullYear();
+      </script>
           <script>
 
             function calculatePrediction() {

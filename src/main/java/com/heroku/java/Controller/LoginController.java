@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.heroku.java.Model.Users;
 import com.heroku.java.Services.AccountServices;
@@ -31,7 +32,7 @@ public class LoginController {
     }
 
     @PostMapping("/login")
-    public String dashboard(HttpSession session, @ModelAttribute("Staff") Users users) {
+    public String dashboard(HttpSession session, @ModelAttribute("Staff") Users users, RedirectAttributes redirectAttributes) {
         try {
             Users authenticatedUser = accountServices.authenticateUser(users.getUname(), users.getPword());
 
@@ -46,11 +47,14 @@ public class LoginController {
                 } else if ("staff".equals(authenticatedUser.getRoles())) {
                     return "redirect:/dashboard-staff";
                 }
+            } else {
+                redirectAttributes.addFlashAttribute("errorMessage", "Invalid username or password.");
             }
         } catch (SQLException e) {
             System.out.println("message : " + e.getMessage());
+            redirectAttributes.addFlashAttribute("errorMessage", "An error occurred. Please try again.");
         }
-        return "/login";
+        return "redirect:/";
     }
 
     @GetMapping("/logout")
