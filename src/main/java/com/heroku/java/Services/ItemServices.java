@@ -32,6 +32,7 @@ public class ItemServices {
             insertStatement.setInt(2, item.getIquantity());
             insertStatement.setString(3, item.getIcategory());
             insertStatement.execute();
+            connection.close();
         } catch (SQLException e) {
             throw e;
         }
@@ -52,6 +53,7 @@ public class ItemServices {
                 Item item = new Item(iId, iname, iquantity, icategory);
                 itemList.add(item);
             }
+            connection.close();
         } catch (SQLException e) {
             throw e;
         }
@@ -73,6 +75,7 @@ public class ItemServices {
                 System.out.println(itemId);
                 return new Item(itemId, iname, iquantity, icategory);
             }
+            connection.close();
         } catch (SQLException e) {
             throw e;
         }
@@ -88,6 +91,7 @@ public class ItemServices {
             statement.setString(3, icategory);
             statement.setInt(4, itemId);
             statement.executeUpdate();
+            connection.close();
         } catch (SQLException e) {
             throw e;
         }
@@ -103,6 +107,7 @@ public class ItemServices {
             System.out.println("hehe");
 
             int rowsAffected = statement.executeUpdate();
+            connection.close();
             return rowsAffected > 0;
         } catch (SQLException e) {
             // Handle exceptions appropriately

@@ -50,6 +50,7 @@ public class PredictServices {
             CaseBased cbr = new CaseBased(cbrID, predictQuan, years, reqID, piid, itemid, itemName, projectName, iquantity);
             predictList.add(cbr); 
         }
+        connection.close();
     } catch (SQLException e) {
         throw e;
     }
@@ -85,6 +86,7 @@ public class PredictServices {
             CaseBased cbr = new CaseBased(cbrID, predictQuan, years, reqID, piid, itemid, itemName, projectName, iquantity);
             predictList.add(cbr); 
         }
+        connection.close();
     } catch (SQLException e) {
         throw e;
     }
@@ -118,6 +120,7 @@ public class PredictServices {
 
                    return new Request(rId, reqQuantity, proname,  iname, iquantity, piId);
                 } 
+                connection.close();
             } catch (SQLException e) {
                 throw e;
             }
@@ -135,6 +138,7 @@ public class PredictServices {
         insertStatement.setString(4, casebased.getYears());
   
         insertStatement.executeUpdate();
+        connection.close();
 
     } catch (SQLException e) {
         throw e;
@@ -170,6 +174,7 @@ public class PredictServices {
             Request request = new Request(rid, proid.toString(), reqQuantity, rstatus, proname, iname, iquantity, piid);
             requestList.add(request);
         }
+        connection.close();
     }   catch (SQLException e) {
       throw e;
     }
@@ -185,6 +190,7 @@ public class PredictServices {
             preparedStatement.setInt(1, iQuantity);
             preparedStatement.setInt(2, itemId);
             preparedStatement.executeUpdate();
+            connection.close();
         } catch (SQLException e) {
             throw e;
         }
@@ -217,6 +223,7 @@ public class PredictServices {
 
                 return new CaseBased(cbrId, predictedQuan, years, reqID, piid, itemName, projectName, reqQuantity, iquantity);
             }
+            connection.close();
         } catch (SQLException e) {
             throw e;
         }
@@ -234,6 +241,7 @@ public class PredictServices {
             insertStatement.setInt(5, cbrId);
       
             insertStatement.executeUpdate();
+            connection.close();
     
         } catch (SQLException e) {
             throw e;

@@ -54,7 +54,7 @@ public class RequestServices {
             insertStatement2.addBatch();
         }
         insertStatement2.executeBatch();
-
+        connection.close();
     } catch (SQLException e) {
         throw e;
     }
@@ -77,6 +77,7 @@ public class RequestServices {
             Request request = new Request(rid, sname, proname, reqQuantity, rstatus);
             requestList.add(request);
         }
+        connection.close();
     } catch (SQLException e) {
         throw e;
     }
@@ -108,6 +109,7 @@ public class RequestServices {
               String projectName = resultSet.getString("projectName");
               requestDetails.add(new RequestDetail(requestId, proid, reqQuantity, status, itemID, projectQuantity, itemName, projectName));
           }
+          connection.close();
       } catch (SQLException e) {
           throw e;
       }
@@ -139,6 +141,7 @@ public void updateItemQuantity(int itemId, int newQuantity) throws SQLException 
       statement.setInt(1, newQuantity);
       statement.setInt(2, itemId);
       statement.executeUpdate();
+      connection.close();
   } catch (SQLException e) {
       throw e;
   }
@@ -151,6 +154,7 @@ public void updateRequestStatus(int requestId, String status) throws SQLExceptio
         statement.setString(1, status);
         statement.setInt(2, requestId);
         statement.executeUpdate();
+        connection.close();
     } catch (SQLException e) {
         throw e;
     }
@@ -158,25 +162,36 @@ public void updateRequestStatus(int requestId, String status) throws SQLExceptio
 
 
 //========================== Reject approve ======================
-    public Request getDetails(int requestId) throws SQLException {
-      try (Connection connection = dataSource.getConnection()) {
-        String sql = "SELECT * FROM request WHERE reqid = ?";
-        PreparedStatement statement = connection.prepareStatement(sql);
-        statement.setInt(1, requestId);
-        ResultSet resultSet = statement.executeQuery();
+public List<RequestDetail> getDetails(int requestId) throws SQLException {
+  List<RequestDetail> requestDetails = new ArrayList<>();
+  try (Connection connection = dataSource.getConnection()) {
+      String sql = "SELECT r.reqid, r.projectid, r.reqquantity, r.status, rd.itemid, pi.projectQuantity, i.itemName, p.projectName " +
+                  "FROM request r " +
+                  "JOIN reqdetail rd ON r.reqid = rd.reqid " +
+                  "JOIN project_item pi ON pi.projectID = r.projectID AND pi.itemID = rd.itemID " +
+                  "JOIN item i ON rd.itemID = i.itemID " +
+                  "JOIN project p ON r.projectID = p.projectID " +
+                  "WHERE r.reqid = ?";
+      PreparedStatement statement = connection.prepareStatement(sql);
+      statement.setInt(1, requestId);
+      ResultSet resultSet = statement.executeQuery();
 
-        if (resultSet.next()) {
-            Integer proid = resultSet.getInt("projectid");
-            Integer reqQuantity = resultSet.getInt("reqquantity");
-            String status = resultSet.getString("status");
-            System.out.println(requestId);
-            return new Request(requestId, proid.toString(), reqQuantity, status);
-        }
-      } catch (SQLException e) {
-        throw e;
+      while (resultSet.next()) {
+          Integer proid = resultSet.getInt("projectid");
+          Integer reqQuantity = resultSet.getInt("reqquantity");
+          String status = resultSet.getString("status");
+          Integer itemID = resultSet.getInt("itemid");
+          Integer projectQuantity = resultSet.getInt("projectQuantity");
+          String itemName = resultSet.getString("itemName");
+          String projectName = resultSet.getString("projectName");
+          requestDetails.add(new RequestDetail(requestId, proid, reqQuantity, status, itemID, projectQuantity, itemName, projectName));
       }
-      return null;
+      connection.close();
+  } catch (SQLException e) {
+      throw e;
   }
+  return requestDetails;
+}
 
   public void rejectInventory(int requestId, String proid, Integer reqQuantity, String rstatus) throws SQLException {
     try (Connection connection = dataSource.getConnection()) {
@@ -187,6 +202,7 @@ public void updateRequestStatus(int requestId, String status) throws SQLExceptio
         statement.setString(3, rstatus);
         statement.setInt(4, requestId);
         statement.executeUpdate();
+        connection.close();
     } catch (SQLException e) {
         throw e;
     }
@@ -211,6 +227,7 @@ public void updateRequestStatus(int requestId, String status) throws SQLExceptio
             Request request = new Request(rid, sid, proid.toString(), proname, reqQuantity, rstatus);
             requestList.add(request);
         }
+        connection.close();
     }   catch (SQLException e) {
       throw e;
     }

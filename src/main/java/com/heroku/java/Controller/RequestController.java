@@ -98,8 +98,8 @@ public class RequestController {
     @GetMapping("/reject-approve")
     public String showReject(@RequestParam("rid") int requestId, Model model) {
         try {
-            Request requests = requestServices.getDetails(requestId);
-            model.addAttribute("requests", requests);
+            List<RequestDetail> requestDetails = requestServices.getDetails(requestId);
+            model.addAttribute("requestDetails", requestDetails);
             return "admin/reject-approve";
         } catch (SQLException e) {
             System.out.println("message : " + e.getMessage());
@@ -108,15 +108,18 @@ public class RequestController {
     }
 
     @PostMapping("/reject-approve")
-    public String reject(HttpSession session, @RequestParam(name = "rid") int requestId, @ModelAttribute("requests") Request request, Model model) {
-        try {
-            requestServices.rejectInventory(requestId, request.getProid(), request.getReqQuantity(), request.getRstatus());
-            return "redirect:/approve-inventory";
+    public String rejectRequest(@RequestParam("rid") int requestId, @RequestParam("proid") int projectId, Model model) {
+        try {    
+            // Update the request status to 'approved'
+            requestServices.updateRequestStatus(requestId, "rejected"); // Assuming you have a method to update request status
+    
+            model.addAttribute("message", "Request rejected successfully.");
+            return "redirect:/approve-inventory"; // Redirect to the admin dashboard after approval
         } catch (SQLException e) {
-            System.out.println("message: " + e.getMessage());
-            return "redirect:/dashboard-admin";
+            model.addAttribute("error", "Error approving request: " + e.getMessage());
+            return "admin/reject-approve";
         }
-    }
+    }    
 
     //staff view status
     @GetMapping("/itemrequest")

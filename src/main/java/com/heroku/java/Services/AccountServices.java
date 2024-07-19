@@ -40,12 +40,14 @@ public class AccountServices {
             user.setRoles(resultSet.getString("role"));
             user.setSid(resultSet.getInt("staffid"));
             return user;
-        }
-    } catch (SQLException e) {
+            }
+            connection.close();
+        } catch (SQLException e) {
         throw e;
-    }
+        }
     return null;
     }
+      
 
 // Add Account
     public void addAccount(Users user) throws SQLException {
@@ -60,6 +62,8 @@ public class AccountServices {
             insertStatement.setString(4, user.getRoles());
             insertStatement.setInt(5, userid);
             insertStatement.executeUpdate();
+
+            connection.close();
         } catch (SQLException e) {
             throw e;
         }
@@ -82,6 +86,7 @@ public class AccountServices {
                 Users staff = new Users(sid, name, uname, pword, roles);
                 userList.add(staff);
             }
+            connection.close();
         } catch (SQLException e) {
             throw e;
         }
@@ -104,6 +109,7 @@ public class AccountServices {
 
                 return new Users(staffId, name, uname, pword, roles);
             }
+            connection.close();
         } catch (SQLException e) {
             throw e;
         }
@@ -120,11 +126,14 @@ public class AccountServices {
             statement.setString(4, roles);
             statement.setInt(5, staffId);
             statement.executeUpdate();
+
+            connection.close();
         } catch (SQLException e) {
             throw e;
         }
     }
 
+//Delete Account
     public boolean deleteAccount(int staffId) {
         try (Connection connection = dataSource.getConnection()) {
             String sql = "DELETE FROM staff WHERE staffid=?";
@@ -132,6 +141,7 @@ public class AccountServices {
             statement.setInt(1, staffId);
     
             int rowsAffected = statement.executeUpdate();
+            connection.close();
             return rowsAffected > 0;
         } catch (SQLException e) {
             // Log the exception
