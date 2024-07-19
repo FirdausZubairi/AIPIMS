@@ -13,43 +13,47 @@
     <title>AI Power Inventory Management System</title>
 </head>
 
-<body style="background-color: rgb(179, 179, 179);">
+<body style="background-color: rgba(122, 122, 122, 0.63);">
 
   <div class="dashboard-con d-flex flex-column justify-content-left align-items-center offset-2 col-10">
-    <div style="width: 80%; margin-top: 8%;">
+    <div style="width: 80%; margin-top: 6%;">
+      <div class="card mb-3">
+        <img th:src="@{Banner.png}" class="card-img-top" alt="...">
+      </div>
+
         <div class="card mb-3" style="max-width: 100rem;margin-top: auto; ">
           <div class="row g-0">
-            <div class="col-md-6 offset-md-1">
-              <img th:src="@{Home.jpg}" class="card-img-top">
+            <div class="col-md-8 offset">
+              <img th:src="@{DashboardAIPIMS.png}" class="card-img-top img-fluid" >
             </div>
-            <div class="col-md-4 offset-md-1 d-flex justify-content-center align-items-center">
+            <div class="col-md-4 offset d-flex justify-content-center align-items-center">
               <div class="card-body">
                 <div class="justify-content-center">
                   <div class="row">
                     <div class="col-md-10">
                       <a th:href="@{/item}" style="text-decoration: none;">
-                        <div class="card text-center therapist-card" style="background-color: #9CBEEE;">
+                        <div class="card text-center therapist-card" style="background-color: #0070B8;">
                           <div class="card-body">
-                            <h5 class="card-title" style="color: #000000;">Total Items</h5>
+                            <h5 class="card-title" style="color: #FBEAEB;">Total Items</h5>
                             <h3 id="totalItem" th:text="${itemCount}" style="color: #FBEAEB;">0</h3>
                           </div>
                         </div>
                       </a>
                       
                       <a th:href="@{/account}" style="text-decoration: none;">
-                        <div class="card text-center mt-4 patient-card" style="background-color: #9CBEEE;">
+                        <div class="card text-center mt-4 patient-card" style="background-color: #0070B8;">
                           <div class="card-body">
-                            <h5 class="card-title" style="color: #000000;">Total Accounts</h5>
-                            <h3 id="totalAccount" th:text="${accountCount}" style="color:#FCF6F5;">0</h3>
+                            <h5 class="card-title" style="color: #FBEAEB;">Total Accounts</h5>
+                            <h3 id="totalAccount" th:text="${accountCount}" style="color:#FBEAEB;">0</h3>
                           </div>
                         </div>
                       </a>
 
                       <a th:href="@{/approve-inventory}" style="text-decoration: none;">
-                        <div class="card text-center mt-4 patient-card" style="background-color: #9CBEEE;">
+                        <div class="card text-center mt-4 patient-card" style="background-color: #0070B8;">
                           <div class="card-body">
-                            <h5 class="card-title" style="color: #000000;">Total Request</h5>
-                            <h3 id="totalRequest" th:text="${requestCount}" style="color:#FCF6F5;">0</h3>
+                            <h5 class="card-title" style="color: #FBEAEB;">Total Request</h5>
+                            <h3 id="totalRequest" th:text="${requestCount}" style="color:#FBEAEB;">0</h3>
                           </div>
                         </div>
                       </a>

@@ -11,6 +11,8 @@ import javax.sql.DataSource;
 // import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.heroku.java.Model.Request;
+import com.heroku.java.Model.RequestDetail;
+
 import jakarta.servlet.http.HttpSession;
 
 @Service
@@ -81,42 +83,81 @@ public class RequestServices {
     return requestList;
   }
 
-  //approve
-    public Request getrequestDetails(int requestId) throws SQLException {
-        try (Connection connection = dataSource.getConnection()) {
-            String sql = "SELECT * FROM request WHERE reqid = ?";
-            PreparedStatement statement = connection.prepareStatement(sql);
-            statement.setInt(1, requestId);
-            ResultSet resultSet = statement.executeQuery();
-
-            if (resultSet.next()) {
-                Integer proid = resultSet.getInt("projectid");
-                Integer reqQuantity = resultSet.getInt("reqquantity");
-                String status = resultSet.getString("status");
-                System.out.println(requestId);
-                return new Request(requestId, proid.toString(), reqQuantity, status);
-            }
-        } catch (SQLException e) {
-            throw e;
-        }
-        return null;
-    }
-
-    public void approveInventory(int requestId, String proid, Integer reqQuantity, String rstatus) throws SQLException {
+//====================== Accept Approve ===========================
+    public List<RequestDetail> getRequestDetails(int requestId) throws SQLException {
+      List<RequestDetail> requestDetails = new ArrayList<>();
       try (Connection connection = dataSource.getConnection()) {
-          String sql = "UPDATE request SET projectid = ?, reqquantity = ?, status = ? WHERE reqid = ?";
+          String sql = "SELECT r.reqid, r.projectid, r.reqquantity, r.status, rd.itemid, pi.projectQuantity, i.itemName, p.projectName " +
+                      "FROM request r " +
+                      "JOIN reqdetail rd ON r.reqid = rd.reqid " +
+                      "JOIN project_item pi ON pi.projectID = r.projectID AND pi.itemID = rd.itemID " +
+                      "JOIN item i ON rd.itemID = i.itemID " +
+                      "JOIN project p ON r.projectID = p.projectID " +
+                      "WHERE r.reqid = ?";
           PreparedStatement statement = connection.prepareStatement(sql);
-          statement.setInt(1, Integer.parseInt(proid));
-          statement.setInt(2, reqQuantity);
-          statement.setString(3, rstatus);
-          statement.setInt(4, requestId);
-          statement.executeUpdate();
+          statement.setInt(1, requestId);
+          ResultSet resultSet = statement.executeQuery();
+
+          while (resultSet.next()) {
+              Integer proid = resultSet.getInt("projectid");
+              Integer reqQuantity = resultSet.getInt("reqquantity");
+              String status = resultSet.getString("status");
+              Integer itemID = resultSet.getInt("itemid");
+              Integer projectQuantity = resultSet.getInt("projectQuantity");
+              String itemName = resultSet.getString("itemName");
+              String projectName = resultSet.getString("projectName");
+              requestDetails.add(new RequestDetail(requestId, proid, reqQuantity, status, itemID, projectQuantity, itemName, projectName));
+          }
       } catch (SQLException e) {
           throw e;
       }
+      return requestDetails;
   }
 
-  //reject
+//Postmaping Accept approve
+  public int getItemQuantity(int itemId) throws SQLException {
+    try (Connection connection = dataSource.getConnection()) {
+        String sql = "SELECT itemQuantity FROM item WHERE itemID = ?";
+        PreparedStatement statement = connection.prepareStatement(sql);
+        statement.setInt(1, itemId);
+        ResultSet resultSet = statement.executeQuery();
+
+        if (resultSet.next()) {
+            return resultSet.getInt("itemQuantity");
+        } else {
+            throw new SQLException("Item not found");
+        }
+    } catch (SQLException e) {
+        throw e;
+    }
+}
+
+public void updateItemQuantity(int itemId, int newQuantity) throws SQLException {
+  try (Connection connection = dataSource.getConnection()) {
+      String sql = "UPDATE item SET itemQuantity = ? WHERE itemID = ?";
+      PreparedStatement statement = connection.prepareStatement(sql);
+      statement.setInt(1, newQuantity);
+      statement.setInt(2, itemId);
+      statement.executeUpdate();
+  } catch (SQLException e) {
+      throw e;
+  }
+}
+
+public void updateRequestStatus(int requestId, String status) throws SQLException {
+    try (Connection connection = dataSource.getConnection()) {
+        String sql = "UPDATE request SET status = ? WHERE reqid = ?";
+        PreparedStatement statement = connection.prepareStatement(sql);
+        statement.setString(1, status);
+        statement.setInt(2, requestId);
+        statement.executeUpdate();
+    } catch (SQLException e) {
+        throw e;
+    }
+}
+
+
+//========================== Reject approve ======================
     public Request getDetails(int requestId) throws SQLException {
       try (Connection connection = dataSource.getConnection()) {
         String sql = "SELECT * FROM request WHERE reqid = ?";
@@ -151,7 +192,7 @@ public class RequestServices {
     }
   }
 
-//staff view
+// ====================  Staff View Request Status ======================
   public List<Request> getReq(HttpSession session) throws SQLException {
     List<Request> requestList = new ArrayList<>();
     try (Connection connection = dataSource.getConnection()) {
