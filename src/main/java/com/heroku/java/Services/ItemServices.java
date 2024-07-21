@@ -72,7 +72,7 @@ public class ItemServices {
                 String iname = resultSet.getString("itemname");
                 Integer iquantity = resultSet.getInt("itemquantity");
                 String icategory = resultSet.getString("category");
-                System.out.println(itemId);
+                
                 return new Item(itemId, iname, iquantity, icategory);
             }
             connection.close();
@@ -103,8 +103,6 @@ public class ItemServices {
             String sql = "DELETE FROM item WHERE itemid=?;";
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setInt(1, itemId);
-
-            System.out.println("hehe");
 
             int rowsAffected = statement.executeUpdate();
             connection.close();

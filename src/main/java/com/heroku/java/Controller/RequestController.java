@@ -137,7 +137,7 @@ public class RequestController {
             requestServices.updateRequestStatus(requestId, "rejected"); // Assuming you have a method to update request status
     
             model.addAttribute("message", "Request rejected successfully.");
-            return "redirect:/approve-inventory?approve-success=true"; // Redirect to the admin dashboard after approval
+            return "redirect:/approve-inventory?reject-success=true"; // Redirect to the admin dashboard after approval
         } catch (SQLException e) {
             model.addAttribute("error", "Error approving request: " + e.getMessage());
             return "redirect:/";
