@@ -43,7 +43,7 @@ public class AccountController {
         }
         try {
             accountServices.addAccount(user);
-            return "redirect:/account";
+            return "redirect:/account?add-accountsuccess=true";
         } catch (SQLException e) {
             System.out.println("message : " + e.getMessage());
             System.out.println("error");
@@ -89,7 +89,7 @@ public class AccountController {
         }
         try {
             accountServices.updateAccount(staffId, users.getName(), users.getUname(), users.getPword(), users.getRoles());
-            return "redirect:/account";
+            return "redirect:/account?update-accountsuccess=true";
         } catch (SQLException e) {
             System.out.println("message: " + e.getMessage());
             return "redirect:/";
@@ -102,7 +102,7 @@ public class AccountController {
             return "redirect:/";
         }
         if (accountServices.deleteAccount(staffId)) {
-            return "redirect:/account";
+            return "redirect:/account?delete-accountsuccess=true";
         } else {
             return "redirect:/";
         }

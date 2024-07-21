@@ -10,6 +10,11 @@ public class RequestDetail {
     private String itemName;
     private String projectName;
 
+    
+
+    public RequestDetail() {
+    }
+
     public RequestDetail(Integer requestId, Integer projectId, Integer reqQuantity, String status, Integer itemId, Integer projectQuantity) {
         this.requestId = requestId;
         this.projectId = projectId;

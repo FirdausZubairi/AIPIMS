@@ -43,9 +43,10 @@ public class LoginController {
                 System.out.println("user id is " + authenticatedUser.getSid());
 
                 if ("admin".equals(authenticatedUser.getRoles())) {
-                    return "redirect:/dashboard-admin";
+                    return "redirect:/dashboard-admin?admin-loginsuccess=true";
                 } else if ("staff".equals(authenticatedUser.getRoles())) {
-                    return "redirect:/dashboard-staff";
+                    session.setAttribute("staffId", authenticatedUser.getSid());
+                    return "redirect:/dashboard-staff?staff-loginsuccess=true";
                 }
             } else {
                 redirectAttributes.addFlashAttribute("errorMessage", "Invalid username or password.");

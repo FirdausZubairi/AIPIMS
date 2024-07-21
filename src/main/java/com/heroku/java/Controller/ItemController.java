@@ -41,7 +41,7 @@ public class ItemController {
         }
         try {
             itemServices.addItem(item);
-            return "redirect:/item";
+            return "redirect:/item?create-itemsuccess=true";
         } catch (SQLException e) {
             System.out.println("message : " + e.getMessage());
             System.out.println("error");
@@ -87,7 +87,7 @@ public class ItemController {
         }
         try {
             itemServices.updateItem(itemId, items.getIname(), items.getIquantity(), items.getIcategory());
-            return "redirect:/item";
+            return "redirect:/item?update-itemsuccess=true";
         } catch (SQLException e) {
             System.out.println("message: " + e.getMessage());
             return "redirect:/";
@@ -100,7 +100,7 @@ public class ItemController {
             return "redirect:/";
         }
         if (itemServices.deleteItem(itemId)) {
-            return "redirect:/item";
+            return "redirect:/item?delete-itemsuccess=true";
         } else {
             return "redirect:/";
         }

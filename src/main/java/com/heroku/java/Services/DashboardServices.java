@@ -1,6 +1,7 @@
 package com.heroku.java.Services;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -44,6 +45,18 @@ public class DashboardServices {
             return resultSet.getInt("count");
         }
     }
+
+    public int getRequestStaffCount(int staffId) throws SQLException {
+        String query = "SELECT COUNT(*) AS count FROM request WHERE staffid = ?;";
+        try (Connection connection = dataSource.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setInt(1, staffId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet.next();
+            return resultSet.getInt("count");
+        }
+    }
+
 
     public int getApproveCount() throws SQLException {
         try (Connection connection = dataSource.getConnection();

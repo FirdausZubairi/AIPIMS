@@ -67,6 +67,42 @@
 <!-- End Side Bar-->
   
     <div th:replace="${template}"></div>
+
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+      <div class="toast" role="alert" id="toast" aria-live="assertive" aria-atomic="true">
+          <div class="toast-header">
+              <img th:src="@{AI_Power.png}" alt="aipower icon" class="rounded me-2"
+                  style="width: 35px; height: 35px;">
+              <strong class="me-auto">AI POWER</strong>
+              <small>1 sec ago</small>
+              <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+          </div>
+          <div class="toast-body" id="display-message1">
+          </div>
+      </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const toastLiveExample = document.getElementById("toast");
+        const toastBootstrap = new bootstrap.Toast(toastLiveExample);
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const loginSuccessParam = urlParams.get('staff-loginsuccess');
+        const RequestSuccessParam = urlParams.get('request-success');
+        
+
+        //Request
+        if (loginSuccessParam !== null && loginSuccessParam === 'true') {
+            toastBootstrap.show();
+            document.getElementById("display-message1").innerHTML = "Welcome Back Staff!";
+        }
+        else if (RequestSuccessParam !== null && RequestSuccessParam === 'true') {
+            toastBootstrap.show();
+            document.getElementById("display-message1").innerHTML = "Request Successfully Send!";
+        }
+    });
+</script>
 </body>
   <script th:src="@{https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js}" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script> 
   <script th:src="@{https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js}" integrity="sha384-fbbOQedDUMZZ5KreZpsbe1LCZPVmfTnH7ois6mU1QK+m14rQ1l2bGBq41eYeM/fS" crossorigin="anonymous"></script> 

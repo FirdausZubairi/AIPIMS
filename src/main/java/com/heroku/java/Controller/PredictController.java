@@ -77,7 +77,7 @@ public class PredictController {
         }
         try {
             predictServices.addPredict(casebased);
-            return "redirect:/predict-inventory";
+            return "redirect:/predict-inventory?retain-success=true";
         } catch (SQLException e) {
             System.out.println("message : " + e.getMessage());
             System.out.println("error");
@@ -131,7 +131,7 @@ public class PredictController {
             predictServices.restockItem(newIquantity, itemId);
 
             redirectAttributes.addFlashAttribute("successMessage", "Item restocked successfully.");
-            return "redirect:/item";
+            return "redirect:/item?restock-success=true";
         } catch (SQLException e) {
             redirectAttributes.addFlashAttribute("errorMessage", "Failed to restock item: " + e.getMessage());
             return "redirect:/";
@@ -146,7 +146,7 @@ public class PredictController {
         }
         try {
             predictServices.RevisedPredict(cbrId, casebased.getReqID(), casebased.getPiid(), casebased.getPredictedQuan(), casebased.getYears());
-            return "redirect:/predict-inventory";
+            return "redirect:/predict-inventory?revised-success=true";
         } catch (SQLException e) {
             System.out.println("message: " + e.getMessage());
             return "redirect:/";

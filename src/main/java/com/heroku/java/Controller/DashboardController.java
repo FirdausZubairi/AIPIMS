@@ -52,10 +52,14 @@ public class DashboardController {
             return "redirect:/"; // or an appropriate error page
         }
 
+        int staffId = (int) session.getAttribute("staffId"); // Assuming you have stored staffId in session
+
         try {
             int itemCount = dashboardServices.getItemCount();
+            int requestStaffCount = dashboardServices.getRequestStaffCount(staffId);
 
             model.addAttribute("itemCount", itemCount);
+            model.addAttribute("requestCount", requestStaffCount);
         } catch (SQLException sqe) {
             sqe.printStackTrace(); // Handle or log the exception
             // You might want to add an error message to the model
@@ -63,6 +67,7 @@ public class DashboardController {
         }
         return "staff/dashboard-staff";
     }
+
 
     @GetMapping("/about")
     public String about(HttpSession session) {
