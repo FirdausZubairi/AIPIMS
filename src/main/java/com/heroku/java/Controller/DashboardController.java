@@ -1,10 +1,10 @@
-package com.heroku.java.Controller;             
+package com.heroku.java.Controller;
 
-// import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import com.heroku.java.Services.DashboardServices;
 import org.springframework.ui.Model;
+import jakarta.servlet.http.HttpSession;
 import java.sql.SQLException;
 
 @Controller
@@ -16,8 +16,17 @@ public class DashboardController {
         this.dashboardServices = dashboardServices;
     }
 
+    private boolean isSessionValid(HttpSession session) {
+        String username = (String) session.getAttribute("username");
+        return username != null;
+    }
+
     @GetMapping("/dashboard-admin")
-    public String dashboardAdmin(Model model) {
+    public String dashboardAdmin(HttpSession session, Model model) {
+        if (!isSessionValid(session)) {
+            return "redirect:/"; // or an appropriate error page
+        }
+
         try {
             int itemCount = dashboardServices.getItemCount();
             int staffCount = dashboardServices.getStaffCount();
@@ -36,9 +45,13 @@ public class DashboardController {
 
         return "admin/dashboard-admin";
     }
-    
+
     @GetMapping("/dashboard-staff")
-    public String dashboardS(Model model) {
+    public String dashboardS(HttpSession session, Model model) {
+        if (!isSessionValid(session)) {
+            return "redirect:/"; // or an appropriate error page
+        }
+
         try {
             int itemCount = dashboardServices.getItemCount();
 
@@ -52,9 +65,10 @@ public class DashboardController {
     }
 
     @GetMapping("/about")
-    public String about() {
+    public String about(HttpSession session) {
+        if (!isSessionValid(session)) {
+            return "redirect:/"; // or an appropriate error page
+        }
         return "admin/about";
     }
 }
-
-

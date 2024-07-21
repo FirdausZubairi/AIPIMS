@@ -117,22 +117,23 @@ public class RequestServices {
   }
 
 //Postmaping Accept approve
-  public int getItemQuantity(int itemId) throws SQLException {
-    try (Connection connection = dataSource.getConnection()) {
-        String sql = "SELECT itemQuantity FROM item WHERE itemID = ?";
-        PreparedStatement statement = connection.prepareStatement(sql);
-        statement.setInt(1, itemId);
-        ResultSet resultSet = statement.executeQuery();
-
-        if (resultSet.next()) {
-            return resultSet.getInt("itemQuantity");
-        } else {
-            throw new SQLException("Item not found");
+    public int getItemQuantity(int itemId) throws SQLException {
+        try (Connection connection = dataSource.getConnection()) {
+            String sql = "SELECT itemQuantity FROM item WHERE itemID = ?";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setInt(1, itemId);
+            ResultSet resultSet = statement.executeQuery();
+            
+            if (resultSet.next()) {
+                return resultSet.getInt("itemQuantity");
+            } else {
+                throw new SQLException("Item not found");
+            }
+            
+        } catch (SQLException e) {
+            throw e;
         }
-    } catch (SQLException e) {
-        throw e;
     }
-}
 
 public void updateItemQuantity(int itemId, int newQuantity) throws SQLException {
   try (Connection connection = dataSource.getConnection()) {
