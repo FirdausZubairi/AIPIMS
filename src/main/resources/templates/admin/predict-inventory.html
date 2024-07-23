@@ -60,7 +60,7 @@
                         <th scope="col">Project Name</th>
                         <th scope="col">Item Name</th>
                         <th scope="col">Predicted Quantity</th>
-                        <th scope="col">Year Predict</th>
+                        <th scope="col">Year</th>
                         <th scope="col">Action</th>
                     </tr>
                 </thead>
@@ -79,6 +79,12 @@
                   </tr>
               </tbody>
           </table>
+          <form
+            th:action="@{/export-to-pdf}"
+            method="post"
+            modelAttribute="generateItem">
+            <button type="submit" class="btn btn-success" >Generate Record</button>
+            </form>
 
           <!-- Restock Modal -->
           <div th:each="predict: ${Predict}">
