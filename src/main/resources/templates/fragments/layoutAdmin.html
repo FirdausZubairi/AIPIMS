@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    
     <link rel="icon" th:href="@{/AI_Power.png} ">
     <title>AI Power</title>
 </head>
@@ -22,15 +23,15 @@
     </div>
     
     <div class="dropdown justify-content-end nav-item" style="margin-right: 40px;">
-      <button class="btn btn-sm" type="button" id="settingsDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        <span class="material-symbols-outlined"
-          style="margin-top: 10px;" > settings </span>
-      </button>
-      <div class="dropdown-menu dropdown-menu-right dropdown-menu-sm" aria-labelledby="settingsDropdown">
-        <a class="dropdown-item" th:text="${session.username == null} ? 'dev' : ${session.username}"></a>
-        <a class="dropdown-item" th:href="@{/logout}">LogOut</a>
-      </div>
-    </div>            
+        <button class="btn btn-sm" type="button" id="settingsDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <span class="material-symbols-outlined" style="margin-top: 10px;"> settings </span>
+        </button>
+        <div class="dropdown-menu dropdown-menu-right dropdown-menu-sm" aria-labelledby="settingsDropdown">
+          <a class="dropdown-item" th:text="${session.username == null} ? 'dev' : ${session.username}"></a>
+          <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#logoutModal">LogOut</a>
+        </div>
+    </div>     
+
 </nav>
 
 <!-- Start Side Bar-->
@@ -77,6 +78,24 @@
 
 </div>
 <!-- End Side Bar-->
+ <!-- Logout Confirmation Modal -->
+<div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="logoutModalLabel">Confirm Logout</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          Are you sure you want to log out?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <a class="btn btn-danger" th:href="@{/logout}">LogOut</a>
+        </div>
+      </div>
+    </div>
+  </div>
   
     <div th:replace="${template}"></div>
 
@@ -135,15 +154,15 @@
         }
 
         //Item
-        else if (CreateItemSuccessParam !== null && CreateItemSuccessParam === 'true') {
+        if (CreateItemSuccessParam !== null && CreateItemSuccessParam === 'true') {
             toastBootstrap.show();
             document.getElementById("display-message1").innerHTML = "Item Created Successfully!";
         }
-        else if (UpdateItemSuccessParam !== null && UpdateItemSuccessParam === 'true') {
+        if (UpdateItemSuccessParam !== null && UpdateItemSuccessParam === 'true') {
             toastBootstrap.show();
             document.getElementById("display-message1").innerHTML = "Item Updated Successfully!";
         }
-        else if (DeleteItemSuccessParam !== null && DeleteItemSuccessParam === 'true') {
+        if (DeleteItemSuccessParam !== null && DeleteItemSuccessParam === 'true') {
             toastBootstrap.show();
             document.getElementById("display-message1").innerHTML = "Item Deleted Successfully!";
         }

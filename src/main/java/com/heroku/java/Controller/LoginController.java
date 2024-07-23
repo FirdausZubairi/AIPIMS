@@ -10,6 +10,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.heroku.java.Model.Users;
 import com.heroku.java.Services.AccountServices;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.sql.SQLException;
 
@@ -59,11 +61,17 @@ public class LoginController {
     }
 
     @GetMapping("/logout")
-    public String logout(HttpSession session) {
-        System.out.println(
-            ">>>>(" + session.getAttribute("staffid") + ")[" + session.getAttribute("username") + "] logged out...");
+    public String logout(HttpSession session, HttpServletRequest request, HttpServletResponse response) {
+        System.out.println(">>>>(" + session.getAttribute("staffid") + ") = " + session.getAttribute("username") + " logged out");
+        
+        // Invalidate the session
         session.invalidate();
+        
+        // Set headers to prevent caching
+        response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+        response.setHeader("Pragma", "no-cache");
+        response.setDateHeader("Expires", 0);
+        
         return "redirect:/";
     }
-
 }

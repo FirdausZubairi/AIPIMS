@@ -24,14 +24,13 @@
     
     <div class="dropdown justify-content-end nav-item" style="margin-right: 40px;">
       <button class="btn btn-sm" type="button" id="settingsDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        <span class="material-symbols-outlined"
-          style="margin-top: 10px;" > settings </span>
+        <span class="material-symbols-outlined" style="margin-top: 10px;"> settings </span>
       </button>
       <div class="dropdown-menu dropdown-menu-right dropdown-menu-sm" aria-labelledby="settingsDropdown">
         <a class="dropdown-item" th:text="${session.username == null} ? 'dev' : ${session.username}"></a>
-        <a class="dropdown-item" th:href="@{/logout}">LogOut</a>
+        <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#logoutModal">LogOut</a>
       </div>
-    </div>            
+  </div>        
 </nav>
 
 </header>
@@ -103,6 +102,24 @@
         </div>
       </div>
   </div>
+    <!-- Logout Confirmation Modal -->
+    <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="logoutModalLabel">Confirm Logout</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            Are you sure you want to log out?
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            <a class="btn btn-danger" th:href="@{/logout}">LogOut</a>
+          </div>
+        </div>
+      </div>
+    </div>   
   <footer class="d-flex justify-content-center">
     <p>&copy; <span id="currentYear"></span> AI Power Inventory Management System. All rights reserved.</p>
   </footer>
