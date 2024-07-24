@@ -78,9 +78,7 @@ public class CaseBased {
     public Integer getReqQuantity() {
         return reqQuantity;
     }
-
-    
-
+ 
     public void setReqQuantity(Integer reqQuantity) {
         this.reqQuantity = reqQuantity;
     }
