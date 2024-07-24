@@ -45,8 +45,8 @@ public class ItemController {
         } catch (SQLException e) {
             System.out.println("message : " + e.getMessage());
             System.out.println("error");
+            return "redirect:/";
         }
-        return "redirect:/";
     }
 
     @GetMapping("/item")
