@@ -12,20 +12,36 @@ public class CaseBased {
     private Integer reqQuantity;
     private Integer iquantity;
     private Integer itemid;
+    private String category;
 
     public CaseBased() {
     }
 
+    //pdf
+    public CaseBased(Integer cbrID, Integer predictedQuan, String years, Integer reqID, Integer piid, Integer itemid, String itemName,
+            String projectName, Integer iquantity, String category) {
+        this.cbrID = cbrID;
+        this.predictedQuan = predictedQuan;
+        this.years = years;
+        this.reqID = reqID;
+        this.piid = piid;
+        this.itemName = itemName;
+        this.projectName = projectName;
+        this.iquantity = iquantity;
+        this.itemid = itemid;
+        this.category = category;
+    }
+
     public CaseBased(Integer cbrID, Integer predictedQuan, String years, Integer reqID, Integer piid, Integer itemid ,String itemName, String projectName , Integer iquantity) {
-    this.cbrID = cbrID;
-    this.predictedQuan = predictedQuan;
-    this.years = years;
-    this.reqID = reqID;
-    this.piid = piid;
-    this.itemName = itemName;
-    this.projectName = projectName;
-    this.itemid = itemid;
-    this.iquantity = iquantity;
+        this.cbrID = cbrID;
+        this.predictedQuan = predictedQuan;
+        this.years = years;
+        this.reqID = reqID;
+        this.piid = piid;
+        this.itemName = itemName;
+        this.projectName = projectName;
+        this.itemid = itemid;
+        this.iquantity = iquantity;
     }
 
     public CaseBased(Integer cbrID, Integer predictedQuan, String years, String itemName, String projectName) {
@@ -62,6 +78,8 @@ public class CaseBased {
     public Integer getReqQuantity() {
         return reqQuantity;
     }
+
+    
 
     public void setReqQuantity(Integer reqQuantity) {
         this.reqQuantity = reqQuantity;
@@ -137,6 +155,14 @@ public class CaseBased {
 
     public void setItemid(Integer itemid) {
         this.itemid = itemid;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 
     
