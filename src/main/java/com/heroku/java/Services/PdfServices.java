@@ -66,7 +66,7 @@ public class PdfServices {
 
         Font fontDate = FontFactory.getFont(FontFactory.HELVETICA, 12);
         Paragraph date = new Paragraph("Date Created: " + currentDateTime, fontDate);
-        date.setAlignment(Paragraph.ALIGN_RIGHT);
+        date.setAlignment(Paragraph.ALIGN_CENTER);
         document.add(date);
 
         document.add(new Paragraph("\n")); // Add space between sections
