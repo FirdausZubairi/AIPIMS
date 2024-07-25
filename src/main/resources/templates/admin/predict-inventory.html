@@ -57,7 +57,8 @@
             <table class="table align-middle table-rounded table-hover mt-4">
                 <thead>
                     <tr>
-                        <th scope="col">Project Name</th>
+                        <th scope="col">ID</th>
+                        <th scope="col">Project Type</th>
                         <th scope="col">Item Name</th>
                         <th scope="col">Predicted Quantity</th>
                         <th scope="col">Year</th>
@@ -66,7 +67,8 @@
                 </thead>
                 <tbody>
                     <tr th:each="predict : ${Predict}">
-                        <td th:text="${predict.projectName}"></td>
+                        <td th:text="${predict.cbrID}"></td>
+                        <td th:text="${predict.projectType}"></td>
                         <td th:text="${predict.itemName}"></td>
                         <td th:text="${predict.predictedQuan}"></td>
                         <td th:text="${predict.years}"></td>

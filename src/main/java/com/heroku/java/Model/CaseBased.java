@@ -9,6 +9,7 @@ public class CaseBased {
 
     private String itemName;
     private String projectName;
+    private String projectType;
     private Integer reqQuantity;
     private Integer iquantity;
     private Integer itemid;
@@ -32,7 +33,8 @@ public class CaseBased {
         this.category = category;
     }
 
-    public CaseBased(Integer cbrID, Integer predictedQuan, String years, Integer reqID, Integer piid, Integer itemid ,String itemName, String projectName , Integer iquantity) {
+    //Retain //Retrieve
+    public CaseBased(Integer cbrID, Integer predictedQuan, String years, Integer reqID, Integer piid, Integer itemid ,String itemName, String projectType, String projectName , Integer iquantity) {
         this.cbrID = cbrID;
         this.predictedQuan = predictedQuan;
         this.years = years;
@@ -42,6 +44,7 @@ public class CaseBased {
         this.projectName = projectName;
         this.itemid = itemid;
         this.iquantity = iquantity;
+        this.projectType = projectType;
     }
 
     public CaseBased(Integer cbrID, Integer predictedQuan, String years, String itemName, String projectName) {
@@ -163,6 +166,14 @@ public class CaseBased {
 
     public void setCategory(String category) {
         this.category = category;
+    }
+
+    public String getProjectType() {
+        return projectType;
+    }
+
+    public void setProjectType(String projectType) {
+        this.projectType = projectType;
     }
 
     

@@ -28,17 +28,18 @@ public class PredictServices {
     List<CaseBased> predictList = new ArrayList<>();
     try (Connection connection = dataSource.getConnection()) {
         PreparedStatement preparedStatement = connection.prepareStatement(
-            "SELECT v.*,i.itemid, i.itemquantity, i.itemname, p.projectname FROM cbr v " +
+            "SELECT v.*,i.itemid, i.itemquantity, i.itemname, p.projectname, p.projecttype FROM cbr v " +
             "JOIN project_item pt ON (v.piid = pt.piid) " +
             "JOIN item i ON (pt.itemid = i.itemid) " + 
             "JOIN project p ON (pt.projectid = p.projectid)" +
-            "ORDER BY pt.piid"
+            "ORDER BY v.cbrid"
         );
         ResultSet resultSet = preparedStatement.executeQuery();
 
         while (resultSet.next()) {
             Integer cbrID = resultSet.getInt("cbrid");
             String projectName = resultSet.getString("projectname");
+            String projectType = resultSet.getString("projecttype");
             String itemName = resultSet.getString("itemname");
             Integer predictQuan = resultSet.getInt("predictedquantity");
             String years = resultSet.getString("years");
@@ -47,7 +48,7 @@ public class PredictServices {
             Integer itemid = resultSet.getInt("itemid");
             Integer iquantity = resultSet.getInt("itemquantity");
 
-            CaseBased cbr = new CaseBased(cbrID, predictQuan, years, reqID, piid, itemid, itemName, projectName, iquantity);
+            CaseBased cbr = new CaseBased(cbrID, predictQuan, years, reqID, piid, itemid, itemName, projectType, projectName, iquantity);
             predictList.add(cbr); 
         }
         connection.close();
@@ -62,7 +63,7 @@ public class PredictServices {
   public List<CaseBased> getPredicts(String year) throws SQLException {
     List<CaseBased> predictList = new ArrayList<>();
     try (Connection connection = dataSource.getConnection()) {
-        String query = "SELECT v.*, i.itemid, i.itemquantity, i.itemname, p.projectname FROM cbr v " +
+        String query = "SELECT v.*, i.itemid, i.itemquantity, i.itemname, p.projectname, p.projecttype FROM cbr v " +
                         "JOIN project_item pt ON (v.piid = pt.piid) " +
                         "JOIN item i ON (pt.itemid = i.itemid) " + 
                         "JOIN project p ON (pt.projectid = p.projectid) " +
@@ -75,6 +76,7 @@ public class PredictServices {
         while (resultSet.next()) {
             Integer cbrID = resultSet.getInt("cbrid");
             String projectName = resultSet.getString("projectname");
+            String projectType = resultSet.getString("projecttype");
             String itemName = resultSet.getString("itemname");
             Integer predictQuan = resultSet.getInt("predictedquantity");
             String years = resultSet.getString("years");
@@ -83,7 +85,7 @@ public class PredictServices {
             Integer itemid = resultSet.getInt("itemid");
             Integer iquantity = resultSet.getInt("itemquantity");
 
-            CaseBased cbr = new CaseBased(cbrID, predictQuan, years, reqID, piid, itemid, itemName, projectName, iquantity);
+            CaseBased cbr = new CaseBased(cbrID, predictQuan, years, reqID, piid, itemid, itemName, projectType, projectName, iquantity);
             predictList.add(cbr); 
         }
         connection.close();
@@ -92,7 +94,7 @@ public class PredictServices {
     }
     return predictList;
 }
-//===================RETRIEVE=============================
+//===================RETAIN=============================
     //Get the Detail before retrieve from request and project_item
     public Request getRetrieveDetails(int rId, int piId) throws SQLException {
             try (Connection connection = dataSource.getConnection()) {
@@ -127,7 +129,7 @@ public class PredictServices {
             return null;
         }
 
-  //Retrieve Postmapping
+  //Retain Postmapping
   public void addPredict(CaseBased casebased) throws SQLException {
     try (Connection connection = dataSource.getConnection()) {
         String insertPredictSql = "INSERT INTO cbr(reqid, piid, predictedquantity, years) VALUES(?,?,?,?)";
