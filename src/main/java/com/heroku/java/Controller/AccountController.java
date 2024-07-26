@@ -26,8 +26,6 @@ public class AccountController {
         return username != null;
     }
 
-
-
     @GetMapping("/add-account")
     public String addAccount(HttpSession session) {
         if (!isSessionValid(session)) {
@@ -52,12 +50,16 @@ public class AccountController {
     }
 
     @GetMapping("/account")
-    public String Account(HttpSession session, Model model, Users User) {
+    public String account(HttpSession session, Model model) {
         if (!isSessionValid(session)) {
             return "redirect:/";
         }
         try {
             List<Users> userList = accountServices.getAllUsers();
+            // Mask passwords
+            for (Users user : userList) {
+                user.setPword("*****"); // Mask the password
+            }
             model.addAttribute("Users", userList);
             return "admin/account";
         } catch (SQLException e) {
