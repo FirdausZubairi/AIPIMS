@@ -37,7 +37,7 @@
     <div class="card mb-3 d-flex justify-content-center col-8 offset-2" style="margin-top: 8%">
         <div class="row g-0">
           <div class="col-md-6">
-            <img th:src="@{approval.png}" class="img-fluid rounded-start">
+            <img th:src="@{Accept.png}" class="img-fluid rounded-start">
           </div>
           <div class="col-md-6 d-flex align-items-center">
             <div class="card-body">
@@ -87,20 +87,24 @@
 
                     <h4>Item Details</h4>
                     <div class="col mb-3">
-                        <div class="col-sm-12">
+                        <div class="col-sm-10">
                             <table class="table table-bordered">
                                 <thead>
                                     <tr>
                                         <!-- <th>Item ID</th> -->
                                         <th>Item Name</th>
                                         <th>Project Quantity</th>
+                                        <th>Current Quantity</th>
+                                        <th>Total Quantity</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr th:each="detail : ${requestDetails}">
                                         <!-- <td th:text="${detail.itemId}"></td> -->
                                         <td th:text="${detail.itemName}"></td>
-                                        <td th:text="${detail.projectQuantity}"></td>
+                                        <td th:text="${detail.reqQuantity * detail.projectQuantity}"></td>
+                                        <td th:text="${detail.itemQuantity}"></td>
+                                        <td th:text="${detail.itemQuantity - (detail.reqQuantity * detail.projectQuantity)}"></td>
                                     </tr>
                                 </tbody>
                             </table>

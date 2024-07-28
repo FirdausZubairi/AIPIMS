@@ -1,5 +1,7 @@
 package com.heroku.java.Controller;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -95,14 +97,18 @@ public class ItemController {
     }
 
     @GetMapping("/delete-item")
-    public String deleteItem(HttpSession session, @RequestParam("iId") int itemId) {
+    public ResponseEntity<String> deleteItem(HttpSession session, @RequestParam("iId") int itemId) {
         if (!isSessionValid(session)) {
-            return "redirect:/";
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized");
         }
-        if (itemServices.deleteItem(itemId)) {
-            return "redirect:/item?delete-itemsuccess=true";
+        if (!itemServices.canDeleteItem(itemId)) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("You cannot delete the item. The item has already in request.");
+        }
+        boolean isDeleted = itemServices.deleteItem(itemId);
+        if (isDeleted) {
+            return ResponseEntity.status(HttpStatus.OK).body("Item deleted successfully.");
         } else {
-            return "redirect:/";
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred while deleting the item.");
         }
     }
 

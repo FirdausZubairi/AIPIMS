@@ -85,36 +85,69 @@ public class RequestServices {
   }
 
 //====================== Accept Approve ===========================
-    public List<RequestDetail> getRequestDetails(int requestId) throws SQLException {
-      List<RequestDetail> requestDetails = new ArrayList<>();
-      try (Connection connection = dataSource.getConnection()) {
-          String sql = "SELECT r.reqid, r.projectid, r.reqquantity, r.status, rd.itemid, pi.projectQuantity, i.itemName, p.projectName " +
-                      "FROM request r " +
-                      "JOIN reqdetail rd ON r.reqid = rd.reqid " +
-                      "JOIN project_item pi ON pi.projectID = r.projectID AND pi.itemID = rd.itemID " +
-                      "JOIN item i ON rd.itemID = i.itemID " +
-                      "JOIN project p ON r.projectID = p.projectID " +
-                      "WHERE r.reqid = ?";
-          PreparedStatement statement = connection.prepareStatement(sql);
-          statement.setInt(1, requestId);
-          ResultSet resultSet = statement.executeQuery();
+//     public List<RequestDetail> getRequestDetails(int requestId) throws SQLException {
+//       List<RequestDetail> requestDetails = new ArrayList<>();
+//       try (Connection connection = dataSource.getConnection()) {
+//           String sql = "SELECT r.reqid, r.projectid, r.reqquantity, r.status, rd.itemid, pi.projectQuantity, i.itemName, p.projectName " +
+//                       "FROM request r " +
+//                       "JOIN reqdetail rd ON r.reqid = rd.reqid " +
+//                       "JOIN project_item pi ON pi.projectID = r.projectID AND pi.itemID = rd.itemID " +
+//                       "JOIN item i ON rd.itemID = i.itemID " +
+//                       "JOIN project p ON r.projectID = p.projectID " +
+//                       "WHERE r.reqid = ?";
+//           PreparedStatement statement = connection.prepareStatement(sql);
+//           statement.setInt(1, requestId);
+//           ResultSet resultSet = statement.executeQuery();
 
-          while (resultSet.next()) {
-              Integer proid = resultSet.getInt("projectid");
-              Integer reqQuantity = resultSet.getInt("reqquantity");
-              String status = resultSet.getString("status");
-              Integer itemID = resultSet.getInt("itemid");
-              Integer projectQuantity = resultSet.getInt("projectQuantity");
-              String itemName = resultSet.getString("itemName");
-              String projectName = resultSet.getString("projectName");
-              requestDetails.add(new RequestDetail(requestId, proid, reqQuantity, status, itemID, projectQuantity, itemName, projectName));
-          }
-          connection.close();
-      } catch (SQLException e) {
-          throw e;
-      }
-      return requestDetails;
-  }
+//           while (resultSet.next()) {
+//               Integer proid = resultSet.getInt("projectid");
+//               Integer reqQuantity = resultSet.getInt("reqquantity");
+//               String status = resultSet.getString("status");
+//               Integer itemID = resultSet.getInt("itemid");
+//               Integer projectQuantity = resultSet.getInt("projectQuantity");
+//               String itemName = resultSet.getString("itemName");
+//               String projectName = resultSet.getString("projectName");
+//               requestDetails.add(new RequestDetail(requestId, proid, reqQuantity, status, itemID, projectQuantity, itemName, projectName));
+//           }
+//           connection.close();
+//       } catch (SQLException e) {
+//           throw e;
+//       }
+//       return requestDetails;
+//   }
+
+public List<RequestDetail> getRequestDetails(int requestId) throws SQLException {
+    List<RequestDetail> requestDetails = new ArrayList<>();
+    try (Connection connection = dataSource.getConnection()) {
+        String sql = "SELECT r.reqid, r.projectid, r.reqquantity, r.status, rd.itemid, pi.projectQuantity, i.itemName, p.projectName, i.itemQuantity " +
+                     "FROM request r " +
+                     "JOIN reqdetail rd ON r.reqid = rd.reqid " +
+                     "JOIN project_item pi ON pi.projectID = r.projectID AND pi.itemID = rd.itemID " +
+                     "JOIN item i ON rd.itemID = i.itemID " +
+                     "JOIN project p ON r.projectID = p.projectID " +
+                     "WHERE r.reqid = ?";
+        PreparedStatement statement = connection.prepareStatement(sql);
+        statement.setInt(1, requestId);
+        ResultSet resultSet = statement.executeQuery();
+
+        while (resultSet.next()) {
+            Integer proid = resultSet.getInt("projectid");
+            Integer reqQuantity = resultSet.getInt("reqquantity");
+            String status = resultSet.getString("status");
+            Integer itemID = resultSet.getInt("itemid");
+            Integer projectQuantity = resultSet.getInt("projectQuantity");
+            String itemName = resultSet.getString("itemName");
+            String projectName = resultSet.getString("projectName");
+            Integer itemQuantity = resultSet.getInt("itemQuantity");
+            requestDetails.add(new RequestDetail(requestId, proid, reqQuantity, status, itemID, projectQuantity, itemName, projectName, itemQuantity));
+        }
+        connection.close();
+    } catch (SQLException e) {
+        throw e;
+    }
+    return requestDetails;
+}
+
 
 //Postmaping Accept approve
     public int getItemQuantity(int itemId) throws SQLException {

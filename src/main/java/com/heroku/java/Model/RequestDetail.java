@@ -9,10 +9,21 @@ public class RequestDetail {
     private Integer projectQuantity;
     private String itemName;
     private String projectName;
-
-    
+    private Integer itemQuantity;
 
     public RequestDetail() {
+    }
+
+    public RequestDetail(Integer requestId, Integer projectId, Integer reqQuantity, String status, Integer itemId, Integer projectQuantity, String itemName, String projectName, Integer itemQuantity) {
+        this.requestId = requestId;
+        this.projectId = projectId;
+        this.reqQuantity = reqQuantity;
+        this.status = status;
+        this.itemId = itemId;
+        this.projectQuantity = projectQuantity;
+        this.itemName = itemName;
+        this.projectName = projectName;
+        this.itemQuantity = itemQuantity;
     }
 
     public RequestDetail(Integer requestId, Integer projectId, Integer reqQuantity, String status, Integer itemId, Integer projectQuantity) {
@@ -98,6 +109,14 @@ public class RequestDetail {
 
     public void setProjectQuantity(Integer projectQuantity) {
         this.projectQuantity = projectQuantity;
+    }
+
+    public Integer getItemQuantity() {
+        return itemQuantity;
+    }
+
+    public void setItemQuantity(Integer itemQuantity) {
+        this.itemQuantity = itemQuantity;
     }
 
     

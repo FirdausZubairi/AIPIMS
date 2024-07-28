@@ -103,29 +103,40 @@
           </script>
           <!-- modal js -->
           <script>
-            $(document).ready(function() {
+          $(document).ready(function() {
           $('#deleteModal').on('show.bs.modal', function(event) {
-            var deleteId = $(event.relatedTarget).data('id');
-            var deleteUrl = '/delete-item?iId=' + deleteId;
-            $('#deleteButton').attr('href', deleteUrl);
+              var deleteId = $(event.relatedTarget).data('id');
+              var deleteUrl = '/delete-item?iId=' + deleteId;
+              $('#deleteButton').attr('href', deleteUrl);
           });
-        
+
           $('#deleteButton').click(function(event) {
-            event.preventDefault();
-            var deleteUrl = $(this).attr('href');
-        
-            // Send a GET request to the deleteUrl
-            $.get(deleteUrl, function() {
-              // Refresh the page after successful deletion
-              location.reload();
-            }).fail(function() {
-              // Handle any errors
-              alert('An error occurred while deleting the account.');
-            });
-        
-            $('#deleteModal').modal('hide');
+              event.preventDefault();
+              var deleteUrl = $(this).attr('href');
+
+              // Send a GET request to the deleteUrl
+              $.ajax({
+                  url: deleteUrl,
+                  method: 'GET',
+                  success: function(response, textStatus, xhr) {
+                      if (xhr.status === 200) {
+                          location.reload(); // Refresh the page after successful deletion
+                      } else {
+                          alert(response); // Show the response message
+                      }
+                  },
+                  error: function(xhr) {
+                      if (xhr.status === 409) {
+                          alert('You cannot delete the item. The item has already in request.');
+                      } else {
+                          alert('An error occurred while deleting the item.');
+                      }
+                  }
+              });
+
+              $('#deleteModal').modal('hide');
           });
-        });
+      });
           </script>
 
             <script

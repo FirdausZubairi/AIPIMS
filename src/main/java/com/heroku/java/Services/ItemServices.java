@@ -98,17 +98,36 @@ public class ItemServices {
     }
 
 //Delete Item
+    public boolean canDeleteItem(int itemId) {
+        try (Connection connection = dataSource.getConnection()) {
+            // Check if the account has made a request
+            String checkSql = "SELECT COUNT(*) FROM reqdetail WHERE itemid = ?";
+            PreparedStatement checkStatement = connection.prepareStatement(checkSql);
+            checkStatement.setInt(1, itemId);
+            ResultSet resultSet = checkStatement.executeQuery();
+            
+            if (resultSet.next() && resultSet.getInt(1) > 0) {
+                return false; // The account has made a request
+            }
+            return true; // The account has not made a request
+        } catch (SQLException e) {
+            // Log the exception
+            e.printStackTrace();
+            return false;
+        }
+    }
+    
     public boolean deleteItem(int itemId) {
         try (Connection connection = dataSource.getConnection()) {
-            String sql = "DELETE FROM item WHERE itemid=?;";
-            PreparedStatement statement = connection.prepareStatement(sql);
-            statement.setInt(1, itemId);
-
-            int rowsAffected = statement.executeUpdate();
-            connection.close();
+            // If the account can be deleted, proceed to delete
+            String deleteSql = "DELETE FROM item WHERE itemid=?";
+            PreparedStatement deleteStatement = connection.prepareStatement(deleteSql);
+            deleteStatement.setInt(1, itemId);
+    
+            int rowsAffected = deleteStatement.executeUpdate();
             return rowsAffected > 0;
         } catch (SQLException e) {
-            // Handle exceptions appropriately
+            // Log the exception
             e.printStackTrace();
             return false;
         }
