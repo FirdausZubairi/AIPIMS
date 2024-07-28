@@ -111,15 +111,18 @@
                     >Quantity</label
                   >
                   <div class="col">
-                    <input
-                      type="number"
-                      min="1"
+                    <input type="text"
+                    min="1"
+                    max="9"
+                    maxlength="1"
+                    step="1"
+                    pattern="[0-9]{1}"
                       class="form-control"
                       name="reqQuantity"
                       placeholder="Quantity Project"
                       id="quantityProject"
-                      required
-                    />
+                      required 
+                      oninput="this.value = this.value.replace(/[^0-9]/g, '')"/>
                   </div>
                 </div>
 
@@ -132,13 +135,12 @@
                   >
                   <div class="col">
                     <input
-                      type="date"
-                      min="1"
-                      class="form-control"
-                      name="dateReq"
-                      id="dateReq"
-                      required
-                    />
+                    type="date"
+                    class="form-control"
+                    name="dateReq"
+                    id="dateReq"
+                    required
+                  />
                   </div>
                 </div>
 
@@ -265,6 +267,8 @@
     </footer>
         <script>
           document.getElementById("currentYear").textContent = new Date().getFullYear();
+          document.getElementById('dateReq').setAttribute('min', new Date().toISOString().split('T')[0]);
+</script>
         </script>
 
     <script
