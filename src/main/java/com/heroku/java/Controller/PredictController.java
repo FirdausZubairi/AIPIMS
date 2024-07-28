@@ -49,11 +49,14 @@ public class PredictController {
         if (!isSessionValid(session)) {
             return "redirect:/";
         }
+
+        // Pass null or an empty string if no year is selected
         List<CaseBased> predictList = predictServices.getPredicts(searchValue);
         model.addAttribute("Predict", predictList);
         model.addAttribute("searchValue", searchValue);
         return "admin/predict-inventory";
     }
+
 
     @GetMapping("/new-predict")
     public String shownpredict(HttpSession session, @RequestParam("rid") int rId, @RequestParam("piid") int piId, Model model) {

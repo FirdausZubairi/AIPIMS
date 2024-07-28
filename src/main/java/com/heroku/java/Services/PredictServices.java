@@ -4,14 +4,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-// import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import javax.sql.DataSource;
-// import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.heroku.java.Model.CaseBased;
-// import jakarta.servlet.http.HttpSession;
 import com.heroku.java.Model.Request;
 
 @Service
@@ -63,14 +60,22 @@ public class PredictServices {
   public List<CaseBased> getPredicts(String year) throws SQLException {
     List<CaseBased> predictList = new ArrayList<>();
     try (Connection connection = dataSource.getConnection()) {
+        // Modify query to handle no specific year
         String query = "SELECT v.*, i.itemid, i.itemquantity, i.itemname, p.projectname, p.projecttype FROM cbr v " +
                         "JOIN project_item pt ON (v.piid = pt.piid) " +
                         "JOIN item i ON (pt.itemid = i.itemid) " + 
                         "JOIN project p ON (pt.projectid = p.projectid) " +
-                        // "ORDER BY pt.piid " +
-                       "WHERE v.years LIKE ?";
+                        "WHERE v.years LIKE ? ORDER BY v.cbrid";
+        
         PreparedStatement preparedStatement = connection.prepareStatement(query);
-        preparedStatement.setString(1, year ); // Use '%' for all years if no specific year is provided
+        
+        // Use '%' for all years if no specific year is provided
+        if (year == null || year.isEmpty()) {
+            preparedStatement.setString(1, "%");
+        } else {
+            preparedStatement.setString(1, year);
+        }
+        
         ResultSet resultSet = preparedStatement.executeQuery();
 
         while (resultSet.next()) {
@@ -94,6 +99,8 @@ public class PredictServices {
     }
     return predictList;
 }
+
+
 //===================RETAIN=============================
     //Get the Detail before retrieve from request and project_item
     public Request getRetrieveDetails(int rId, int piId) throws SQLException {

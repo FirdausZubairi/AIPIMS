@@ -111,15 +111,16 @@
                         </div>
                     </div>
                     
-                    <div class="col-8 mb-3">
+                    <div class="col-8">
                       <label hidden for="inputProject" name="rstatus" class="form-label">Status</label>
                       <select hidden id="status" name="rstatus" type="hidden" class="form-select" required>
                           <option type="hidden" value="approved">approved</option>
                       </select>
                   </div>
-                  <br>
+                  <div class="justify-content-center">
                     <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#approvalModal">Approve</button>
                     <a th:href="@{/approve-inventory}"><button type="button" class="btn btn-secondary">Back</button></a>
+                    </div>
                 </form>
             </div>
           </div>

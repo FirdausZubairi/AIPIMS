@@ -2,24 +2,19 @@ package com.heroku.java.Services;
 import java.awt.Color;
 import java.io.IOException;
 import java.sql.Connection;
-// import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-// import java.sql.Statement;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.sql.DataSource;
 
-// import org.springframework.beans.factory.annotation.Autowired;
-// import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.heroku.java.Model.CaseBased;
-// import jakarta.servlet.http.HttpSession;
-// import com.heroku.java.Model.Request;
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.Font;
@@ -27,7 +22,6 @@ import com.lowagie.text.FontFactory;
 import com.lowagie.text.PageSize;
 import com.lowagie.text.Paragraph;
 import com.lowagie.text.Phrase;
-// import com.lowagie.text.pdf.CMYKColor;
 import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
@@ -96,7 +90,7 @@ public class PdfServices {
         Paragraph inventoryTitle = new Paragraph("Inventory", fontInventory);
         document.add(inventoryTitle);
 
-        PdfPTable table = new PdfPTable(6); // Adjust the number of columns as needed
+        PdfPTable table = new PdfPTable(5); // Adjust the number of columns as needed
         table.setWidthPercentage(100);
         table.setSpacingBefore(5);
 
@@ -106,7 +100,6 @@ public class PdfServices {
 
          // Table Rows
          for (CaseBased record : listofPredictions) {
-            table.addCell(String.valueOf(record.getItemid()));
             table.addCell(record.getItemName());
             table.addCell(record.getCategory()); // Placeholder, replace with actual category if available
             table.addCell(String.valueOf(record.getIquantity()));
@@ -156,8 +149,6 @@ public class PdfServices {
         PdfPCell cell = new PdfPCell();
         cell.setBackgroundColor(new Color(0, 112, 184));
         cell.setPadding(5);
-        cell.setPhrase(new Phrase("Item ID", font));
-        table.addCell(cell);
         cell.setPhrase(new Phrase("Item Name", font));
         table.addCell(cell);
         cell.setPhrase(new Phrase("Category", font));
@@ -169,18 +160,5 @@ public class PdfServices {
         cell.setPhrase(new Phrase("Year", font));
         table.addCell(cell);
     }
-
-    // private void addTableHeader(PdfPCell cell, PdfPTable table, Font font) {
-    //     cell.setPhrase(new Phrase("Case ID", font));
-    //     table.addCell(cell);
-    //     cell.setPhrase(new Phrase("Item ID", font));
-    //     table.addCell(cell);
-    //     cell.setPhrase(new Phrase("Item Name", font));
-    //     table.addCell(cell);
-    //     cell.setPhrase(new Phrase("Predicted Quantity", font));
-    //     table.addCell(cell);
-    //     cell.setPhrase(new Phrase("Year", font));
-    //     table.addCell(cell);
-    // }
 }
 
