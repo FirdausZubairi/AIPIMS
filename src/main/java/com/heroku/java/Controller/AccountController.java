@@ -1,5 +1,7 @@
 package com.heroku.java.Controller;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -11,6 +13,7 @@ import org.springframework.ui.Model;
 import jakarta.servlet.http.HttpSession;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class AccountController {
@@ -94,19 +97,50 @@ public class AccountController {
             return "redirect:/account?update-accountsuccess=true";
         } catch (SQLException e) {
             System.out.println("message: " + e.getMessage());
-            return "redirect:/";
+            return "redirect:/account?update-accountsuccess=false";
         }
     }
 
+    // @GetMapping("/delete-account")
+    // public String deleteAccount(HttpSession session, @ModelAttribute("user") Users users, @RequestParam("sid") int staffId, Model model) {
+    //     if (!isSessionValid(session)) {
+    //         return "redirect:/";
+    //     }
+    //     if (accountServices.deleteAccount(staffId)) {
+    //         return "redirect:/account?delete-accountsuccess=true";
+    //     } else {
+    //         model.addAttribute("deleteMessage", "You cannot delete the account. The account has made a request.");
+    //         return "redirect:/account";
+    //     }
+    // }
+
+    // @GetMapping("/delete-account")
+    // public String deleteAccount(HttpSession session, @ModelAttribute("user") Users users, @RequestParam("sid") int staffId, Model model) {
+    //     if (!isSessionValid(session)) {
+    //         return "redirect:/";
+    //     }
+    //     boolean isDeleted = accountServices.deleteAccount(staffId);
+    //     if (isDeleted) {
+    //         return "redirect:/account?delete-accountsuccess=true";
+    //     } else {
+    //         model.addAttribute("deleteMessage", "You cannot delete the account. The account has made a request.");
+    //         return "redirect:/account"; // Assuming "account" is the name of the view where the message should be displayed
+    //     }
+    // }
+
     @GetMapping("/delete-account")
-    public String deleteAccount(HttpSession session, @ModelAttribute("user") Users users, @RequestParam("sid") int staffId, Model model) {
+    public ResponseEntity<String> deleteAccount(HttpSession session, @RequestParam("sid") int staffId) {
         if (!isSessionValid(session)) {
-            return "redirect:/";
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized");
         }
-        if (accountServices.deleteAccount(staffId)) {
-            return "redirect:/account?delete-accountsuccess=true";
+        if (!accountServices.canDeleteAccount(staffId)) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("You cannot delete the account. The account has made a request.");
+        }
+        boolean isDeleted = accountServices.deleteAccount(staffId);
+        if (isDeleted) {
+            return ResponseEntity.status(HttpStatus.OK).body("Account deleted successfully.");
         } else {
-            return "redirect:/";
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred while deleting the account.");
         }
     }
 }

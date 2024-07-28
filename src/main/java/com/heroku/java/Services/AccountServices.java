@@ -6,7 +6,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import javax.sql.DataSource;
 // import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -134,14 +137,33 @@ public class AccountServices {
     }
 
 //Delete Account
+    public boolean canDeleteAccount(int staffId) {
+        try (Connection connection = dataSource.getConnection()) {
+            // Check if the account has made a request
+            String checkSql = "SELECT COUNT(*) FROM request WHERE staffid = ?";
+            PreparedStatement checkStatement = connection.prepareStatement(checkSql);
+            checkStatement.setInt(1, staffId);
+            ResultSet resultSet = checkStatement.executeQuery();
+            
+            if (resultSet.next() && resultSet.getInt(1) > 0) {
+                return false; // The account has made a request
+            }
+            return true; // The account has not made a request
+        } catch (SQLException e) {
+            // Log the exception
+            e.printStackTrace();
+            return false;
+        }
+    }
+    
     public boolean deleteAccount(int staffId) {
         try (Connection connection = dataSource.getConnection()) {
-            String sql = "DELETE FROM staff WHERE staffid=?";
-            PreparedStatement statement = connection.prepareStatement(sql);
-            statement.setInt(1, staffId);
+            // If the account can be deleted, proceed to delete
+            String deleteSql = "DELETE FROM staff WHERE staffid = ?";
+            PreparedStatement deleteStatement = connection.prepareStatement(deleteSql);
+            deleteStatement.setInt(1, staffId);
     
-            int rowsAffected = statement.executeUpdate();
-            connection.close();
+            int rowsAffected = deleteStatement.executeUpdate();
             return rowsAffected > 0;
         } catch (SQLException e) {
             // Log the exception

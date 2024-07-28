@@ -92,25 +92,19 @@
                         id="inputPassword3" required>
                     </div>
                     </div>
-                    <div class="col-4 mb-3">
+                    <div class="col mb-3">
                         <label for="inputRole" name="roles" class="form-label">Role</label>
-                        <select id="role" name="roles" class="form-select" required>
-                        <option value="" disabled selected>
-                                Select Option
-                        </option>
-                        <option 
-                        value="admin"
-                        th:selected="${user.roles == 'admin'}"
-                        >Admin
-                        </option>
-                        <option value="staff"
-                        th:selected="${user.roles == 'staff'}"
-                        >Staff
-                        </option>
-                        </select>
+                        <div class="col-sm-10">
+                          <input type="text"
+                          class="form-control"
+                          id="role"
+                          name="roles"
+                          th:value="${user.roles}"
+                          readonly>
+                      </div>
                     </div>
-                    <div class="row mb-3">
-                    <div class="col-sm-10">
+                    <div class="col mb-3">
+                    
                         <div class="form-check">
                         <input class="form-check-input" type="checkbox" id="gridCheck1" required>
                         <label class="form-check-label" for="gridCheck1">
@@ -118,8 +112,10 @@
                         </label>
                         </div>
                     </div>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Update</button>
+                    
+                      <button type="submit" class="btn btn-primary">Update</button>
+                      <a th:href="@{/account}"><button type="button" class="btn btn-secondary">Back</button></a>
+                    
                 </form>
             </div>
           </div>
