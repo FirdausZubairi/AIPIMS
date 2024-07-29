@@ -2,6 +2,7 @@ package com.heroku.java.Services;
 import java.awt.Color;
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -38,7 +39,7 @@ public class PdfServices {
         this.dataSource = dataSource;
     }
 
-    public void generatePdfFile(HttpServletResponse response) throws DocumentException, IOException, SQLException {
+    public void generatePdfFile(HttpServletResponse response, String year) throws DocumentException, IOException, SQLException {
         response.setContentType("application/pdf");
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd:HH:mm:ss");
         String currentDateTime = dateFormat.format(new Date());
@@ -46,7 +47,7 @@ public class PdfServices {
         String headervalue = "attachment; filename=AIPIMS_" + currentDateTime + ".pdf";
         response.setHeader(headerkey, headervalue);
 
-        List<CaseBased> listofPredictions = fetchPredictions();
+        List<CaseBased> listofPredictions = fetchPredictions(year);
 
         Document document = new Document(PageSize.A4);
         PdfWriter.getInstance(document, response.getOutputStream());
@@ -101,7 +102,7 @@ public class PdfServices {
          // Table Rows
          for (CaseBased record : listofPredictions) {
             table.addCell(record.getItemName());
-            table.addCell(record.getCategory()); // Placeholder, replace with actual category if available
+            table.addCell(record.getProjectType()); // Placeholder, replace with actual category if available
             table.addCell(String.valueOf(record.getIquantity()));
             table.addCell(String.valueOf(record.getPredictedQuan())); // Placeholder, replace with actual order quantity if available
             table.addCell(record.getYears()); // Placeholder, replace with actual unit price if available
@@ -112,20 +113,32 @@ public class PdfServices {
     
     }
 
-    private List<CaseBased> fetchPredictions() throws SQLException {
+    private List<CaseBased> fetchPredictions(String year) throws SQLException {
         List<CaseBased> listofPredictions = new ArrayList<>();
-        Connection connection = dataSource.getConnection();
-        Statement statement = connection.createStatement();
-        ResultSet resultSet = statement.executeQuery(
-                "SELECT v.*,i.itemid, i.category, i.itemquantity, i.itemname, p.projectname FROM cbr v " +
-                "JOIN project_item pt ON (v.piid = pt.piid) " +
-                "JOIN item i ON (pt.itemid = i.itemid) " +
-                "JOIN project p ON (pt.projectid = p.projectid) " +
-                "ORDER BY pt.piid");
+        try (Connection connection = dataSource.getConnection()) {
+            // Modify query to handle no specific year
+            String query = "SELECT v.*, i.itemid, i.itemquantity, i.itemname, p.projectname, p.projecttype FROM cbr v " +
+                            "JOIN project_item pt ON (v.piid = pt.piid) " +
+                            "JOIN item i ON (pt.itemid = i.itemid) " + 
+                            "JOIN project p ON (pt.projectid = p.projectid) " +
+                            "WHERE v.years LIKE ? ORDER BY v.cbrid";
+            
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            
+            // Use '%' for all years if no specific year is provided
+            if (year == null || year.isEmpty()) {
+                preparedStatement.setString(1, "%");
+            } else {
+                preparedStatement.setString(1, year);
+            }
+            
+            ResultSet resultSet = preparedStatement.executeQuery();
 
         while (resultSet.next()) {
+
             Integer cbrID = resultSet.getInt("cbrid");
             String projectName = resultSet.getString("projectname");
+            String projectType = resultSet.getString("projecttype");
             String itemName = resultSet.getString("itemname");
             Integer predictQuan = resultSet.getInt("predictedquantity");
             String years = resultSet.getString("years");
@@ -133,16 +146,16 @@ public class PdfServices {
             Integer piid = resultSet.getInt("piid");
             Integer itemid = resultSet.getInt("itemid");
             Integer iquantity = resultSet.getInt("itemquantity");
-            String category = resultSet.getString("category");
 
-            CaseBased cbr = new CaseBased(cbrID, predictQuan, years, reqID, piid, itemid, itemName, projectName, iquantity, category);
+            CaseBased cbr = new CaseBased(cbrID, predictQuan, years, reqID, piid, itemid, itemName, projectType, projectName, iquantity);
             listofPredictions.add(cbr);
         }
 
         resultSet.close();
-        statement.close();
         connection.close();
-
+    } catch (SQLException e) {
+        throw e;
+    }
         return listofPredictions;
     }
     private void addTableHeader(PdfPTable table, Font font) {
@@ -151,7 +164,7 @@ public class PdfServices {
         cell.setPadding(5);
         cell.setPhrase(new Phrase("Item Name", font));
         table.addCell(cell);
-        cell.setPhrase(new Phrase("Category", font));
+        cell.setPhrase(new Phrase("Project Type", font));
         table.addCell(cell);
         cell.setPhrase(new Phrase("Quantity on Hand", font));
         table.addCell(cell);

@@ -33,6 +33,20 @@ public class CaseBased {
         this.category = category;
     }
 
+    public CaseBased(Integer cbrID, Integer predictedQuan, String years, Integer reqID, Integer piid, Integer itemid ,String itemName, String projectType, String projectName , Integer iquantity, String category) {
+        this.cbrID = cbrID;
+        this.predictedQuan = predictedQuan;
+        this.years = years;
+        this.reqID = reqID;
+        this.piid = piid;
+        this.itemName = itemName;
+        this.projectName = projectName;
+        this.itemid = itemid;
+        this.iquantity = iquantity;
+        this.projectType = projectType;
+        this.category = category;
+    }
+
     //Retain //Retrieve
     public CaseBased(Integer cbrID, Integer predictedQuan, String years, Integer reqID, Integer piid, Integer itemid ,String itemName, String projectType, String projectName , Integer iquantity) {
         this.cbrID = cbrID;
