@@ -119,44 +119,46 @@ public class PdfServices {
             String query = "SELECT v.*, i.itemid, i.itemquantity, i.itemname, p.projectname, p.projecttype FROM cbr v " +
                             "JOIN project_item pt ON (v.piid = pt.piid) " +
                             "JOIN item i ON (pt.itemid = i.itemid) " + 
-                            "JOIN project p ON (pt.projectid = p.projectid) " +
-                            "WHERE v.years LIKE ? ORDER BY v.cbrid";
-            
+                            "JOIN project p ON (pt.projectid = p.projectid) ";
+    
+            if (year != null && !year.isEmpty()) {
+                query += "WHERE v.years = ? ";
+            }
+    
+            query += "ORDER BY v.years";
+    
             PreparedStatement preparedStatement = connection.prepareStatement(query);
-            
-            // Use '%' for all years if no specific year is provided
-            if (year == null || year.isEmpty()) {
-                preparedStatement.setString(1, "%");
-            } else {
+    
+            if (year != null && !year.isEmpty()) {
                 preparedStatement.setString(1, year);
             }
-            
+    
             ResultSet resultSet = preparedStatement.executeQuery();
-
-        while (resultSet.next()) {
-
-            Integer cbrID = resultSet.getInt("cbrid");
-            String projectName = resultSet.getString("projectname");
-            String projectType = resultSet.getString("projecttype");
-            String itemName = resultSet.getString("itemname");
-            Integer predictQuan = resultSet.getInt("predictedquantity");
-            String years = resultSet.getString("years");
-            Integer reqID = resultSet.getInt("reqid");
-            Integer piid = resultSet.getInt("piid");
-            Integer itemid = resultSet.getInt("itemid");
-            Integer iquantity = resultSet.getInt("itemquantity");
-
-            CaseBased cbr = new CaseBased(cbrID, predictQuan, years, reqID, piid, itemid, itemName, projectType, projectName, iquantity);
-            listofPredictions.add(cbr);
+    
+            while (resultSet.next()) {
+                Integer cbrID = resultSet.getInt("cbrid");
+                String projectName = resultSet.getString("projectname");
+                String projectType = resultSet.getString("projecttype");
+                String itemName = resultSet.getString("itemname");
+                Integer predictQuan = resultSet.getInt("predictedquantity");
+                String years = resultSet.getString("years");
+                Integer reqID = resultSet.getInt("reqid");
+                Integer piid = resultSet.getInt("piid");
+                Integer itemid = resultSet.getInt("itemid");
+                Integer iquantity = resultSet.getInt("itemquantity");
+    
+                CaseBased cbr = new CaseBased(cbrID, predictQuan, years, reqID, piid, itemid, itemName, projectType, projectName, iquantity);
+                listofPredictions.add(cbr);
+            }
+    
+            resultSet.close();
+            connection.close();
+        } catch (SQLException e) {
+            throw e;
         }
-
-        resultSet.close();
-        connection.close();
-    } catch (SQLException e) {
-        throw e;
-    }
         return listofPredictions;
     }
+
     private void addTableHeader(PdfPTable table, Font font) {
         PdfPCell cell = new PdfPCell();
         cell.setBackgroundColor(new Color(0, 112, 184));
